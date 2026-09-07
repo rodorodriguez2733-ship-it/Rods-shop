@@ -9,7 +9,7 @@
 button,input,select,textarea{font:inherit}.app{max-width:1100px;margin:auto}header{position:sticky;top:0;background:var(--panel);border-bottom:1px solid var(--line);padding:12px;z-index:10}
 .top{display:flex;align-items:center;gap:10px}.brand{flex:1;font-weight:900;font-size:21px}.sub{font-size:11px;color:var(--muted)}
 .icon{width:42px;height:42px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text)}
-.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}.tabs button{padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);font-weight:800}.tabs button.active{background:var(--text);color:var(--panel)}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}.tabs button{padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);font-weight:800}.tabs button.active{background:var(--text);color:var(--panel)}
 main{padding:12px}.view{display:none}.view.active{display:block}.toolbar{display:flex;gap:8px;margin-bottom:10px}.toolbar input{flex:1}
 input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--text)}
 .primary{border:0;border-radius:9px;background:var(--accent);color:#fff;padding:10px 13px;font-weight:900}
@@ -21,11 +21,16 @@ dialog{border:0;border-radius:16px;width:min(94vw,600px);padding:0;background:va
 @media(max-width:700px){.grid{grid-template-columns:1fr 1fr}.meta{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.toolbar{flex-direction:column}}
 </style></head><body><div class="app">
 <header><div class="top"><div class="brand">🛠️ <span id="brandName">Repair Hub</span><div class="sub">TELÉFONOS · CONSOLAS · TRADE-IN</div></div><button class="icon" id="themeBtn">◐</button></div>
-<div class="tabs"><button data-v="dashboard" class="active">Resumen</button><button data-v="repairs">Reparaciones</button><button data-v="trade">Trade-In</button><button data-v="settings">Ajustes</button></div></header>
+<div class="tabs"><button data-v="dashboard" class="active">Resumen</button><button data-v="repairs">Reparaciones</button><button data-v="trade">Trade-In</button><button data-v="items">Artículos</button><button data-v="settings">Ajustes</button></div></header>
 <main>
 <section id="dashboard" class="view active"><div class="grid"><div class="stat"><div class="n" id="openCount">0</div><div class="l">Reparaciones abiertas</div></div><div class="stat"><div class="n" id="readyCount">0</div><div class="l">Listas</div></div><div class="stat"><div class="n" id="tradeCount">0</div><div class="l">Trade-In pendientes</div></div><div class="stat"><div class="n" id="tradeValue">$0.00</div><div class="l">Ofertas aceptadas</div></div></div><div class="settings"><b>Actividad reciente</b><div id="recent"></div></div></section>
 <section id="repairs" class="view"><div class="toolbar"><input id="repairSearch" placeholder="Buscar cliente, modelo, serial..."><button class="primary" id="newRepair">+ Nueva reparación</button></div><div id="repairList"></div></section>
 <section id="trade" class="view"><div class="toolbar"><input id="tradeSearch" placeholder="Buscar modelo, cliente..."><button class="primary" id="newTrade">+ Nuevo Trade-In</button></div><div id="tradeList"></div></section>
+
+<section id="items" class="view">
+<div class="toolbar"><input id="itemSearch" placeholder="Buscar artículo, marca, modelo..."><button class="primary" id="newItem">+ Nuevo artículo</button></div>
+<div id="itemList"></div>
+</section>
 <section id="settings" class="view"><div class="settings"><label>Nombre del negocio</label><input id="businessName"><label>Teléfono</label><input id="businessPhone"><label>Tema</label><select id="themeSelect"><option value="light">Claro</option><option value="dark">Oscuro</option></select></div><button class="primary" id="saveSettings">Guardar ajustes</button></section>
 </main></div>
 
@@ -46,14 +51,58 @@ dialog{border:0;border-radius:16px;width:min(94vw,600px);padding:0;background:va
 <label>Estado</label><select id="tStatus"><option value="pending">Pendiente</option><option value="accepted">Aceptado</option><option value="declined">Rechazado</option></select>
 <label>Notas</label><textarea id="tNotes"></textarea><div class="modalActions"><button type="button" id="tradeDelete" class="danger" style="display:none">Eliminar</button><button type="button" id="tradeCancel">Cancelar</button><button class="save">Guardar</button></div></form></dialog>
 
+
+<dialog id="itemDlg"><form class="modal" id="itemForm"><h2 id="itemTitle">Nuevo artículo</h2>
+<label>Marca</label>
+<select id="iBrand">
+<option>Apple</option><option>Samsung</option><option>Nintendo</option><option>PlayStation</option><option>Xbox</option><option>Otro</option>
+</select>
+<div class="grid2">
+<div><label>Tipo de artículo</label><select id="iType"><option>Teléfono</option><option>Consola</option><option>Tablet</option><option>Control</option><option>Accesorio</option><option>Pieza</option><option>Otro</option></select></div>
+<div><label>Modelo</label><input id="iModel" placeholder="iPhone 15, PS5 Slim..."></div>
+</div>
+<div class="grid2">
+<div><label>Costo ($)</label><input id="iCost" type="number" min="0" step=".01"></div>
+<div><label>Precio de venta ($)</label><input id="iSale" type="number" min="0" step=".01"></div>
+</div>
+<div class="grid2">
+<div><label>Cantidad</label><input id="iQty" type="number" min="0" step="1" value="1"></div>
+<div><label>Condición</label><select id="iCondition"><option>Nuevo</option><option>Usado</option><option>Refurbished</option><option>Para piezas</option></select></div>
+</div>
+<label>Serial / SKU (opcional)</label><input id="iSerial">
+<label>Notas</label><textarea id="iNotes"></textarea>
+<div class="modalActions"><button type="button" id="itemDelete" class="danger" style="display:none">Eliminar</button><button type="button" id="itemCancel">Cancelar</button><button class="save">Guardar</button></div>
+</form></dialog>
 <script>
-const K="repair_tradein_v1";let d=JSON.parse(localStorage.getItem(K)||"null")||{settings:{businessName:"Repair Hub",businessPhone:"",theme:"light"},repairs:[],trades:[]};let er=null,et=null;const $=x=>document.getElementById(x),save=()=>localStorage.setItem(K,JSON.stringify(d)),money=n=>"$"+Number(n||0).toFixed(2),uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const K="repair_tradein_v1";let d=JSON.parse(localStorage.getItem(K)||"null")||{settings:{businessName:"Repair Hub",businessPhone:"",theme:"light"},repairs:[],trades:[],items:[]};let er=null,et=null,ei=null;const $=x=>document.getElementById(x),save=()=>localStorage.setItem(K,JSON.stringify(d)),money=n=>"$"+Number(n||0).toFixed(2),uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 function status(s){return({received:"Recibido",diagnosis:"Diagnóstico",parts:"Esperando piezas",repairing:"En reparación",ready:"Listo",delivered:"Entregado"})[s]||s}
 function apply(){document.documentElement.dataset.theme=d.settings.theme;$("brandName").textContent=d.settings.businessName;$("businessName").value=d.settings.businessName;$("businessPhone").value=d.settings.businessPhone;$("themeSelect").value=d.settings.theme}
 function renderRepairs(q=""){q=q.toLowerCase();let a=d.repairs.filter(r=>(r.client+" "+r.phone+" "+r.brand+" "+r.model+" "+r.serial+" "+r.issue).toLowerCase().includes(q)).sort((a,b)=>b.updatedAt-a.updatedAt);$("repairList").innerHTML=a.map(r=>`<div class="card"><div class="cardtop"><div><div class="title">${r.client||"Cliente"} · ${r.brand||""} ${r.model||""}</div><div class="muted">${r.category}${r.serial?" · "+r.serial:""}</div></div><span class="badge">${status(r.status)}</span></div><div class="meta"><div><b>Problema</b><span>${r.issue||"—"}</span></div><div><b>Estimado</b><span>${money(r.estimate)}</span></div><div><b>Balance</b><span>${money(Number(r.estimate||0)-Number(r.deposit||0))}</span></div></div><div class="actions"><button onclick="openRepair('${r.id}')">Editar</button><button class="danger" onclick="delRepair('${r.id}')">Eliminar</button></div></div>`).join("")||"<div class='muted'>No hay reparaciones.</div>"}
 function renderTrades(q=""){q=q.toLowerCase();let a=d.trades.filter(t=>(t.client+" "+t.phone+" "+t.brand+" "+t.model+" "+t.condition+" "+t.serial).toLowerCase().includes(q)).sort((a,b)=>b.updatedAt-a.updatedAt);$("tradeList").innerHTML=a.map(t=>`<div class="card"><div class="cardtop"><div><div class="title">${t.brand||""} ${t.model||""}</div><div class="muted">${t.client||"Cliente"} · ${t.condition}</div></div><span class="badge">${t.status}</span></div><div class="meta"><div><b>Oferta</b><span>${money(t.offer)}</span></div><div><b>Reventa</b><span>${money(t.resale)}</span></div><div><b>Margen</b><span>${money(Number(t.resale||0)-Number(t.offer||0))}</span></div></div><div class="actions"><button onclick="openTrade('${t.id}')">Editar</button><button class="danger" onclick="delTrade('${t.id}')">Eliminar</button></div></div>`).join("")||"<div class='muted'>No hay Trade-In.</div>"}
+
+function renderItems(q=""){
+q=q.toLowerCase();
+let a=(d.items||[]).filter(i=>(i.brand+" "+i.type+" "+i.model+" "+i.serial+" "+i.condition).toLowerCase().includes(q)).sort((a,b)=>b.updatedAt-a.updatedAt);
+$("itemList").innerHTML=a.map(i=>`<div class="card"><div class="cardtop"><div><div class="title">${i.brand} · ${i.model||i.type}</div><div class="muted">${i.type} · ${i.condition}${i.serial?" · "+i.serial:""}</div></div><span class="badge">Stock: ${i.qty}</span></div><div class="meta"><div><b>Costo</b><span>${money(i.cost)}</span></div><div><b>Venta</b><span>${money(i.sale)}</span></div><div><b>Margen/unidad</b><span>${money(Number(i.sale||0)-Number(i.cost||0))}</span></div></div><div class="actions"><button onclick="openItem('${i.id}')">Editar</button><button class="danger" onclick="delItem('${i.id}')">Eliminar</button></div></div>`).join("")||"<div class='muted'>No hay artículos.</div>"
+}
+window.openItem=id=>{
+ei=id||null;let i=id?(d.items||[]).find(x=>x.id===id):{};
+$("itemTitle").textContent=id?"Editar artículo":"Nuevo artículo";
+$("iBrand").value=i.brand||"Apple";$("iType").value=i.type||"Teléfono";$("iModel").value=i.model||"";
+$("iCost").value=i.cost||"";$("iSale").value=i.sale||"";$("iQty").value=i.qty??1;
+$("iCondition").value=i.condition||"Nuevo";$("iSerial").value=i.serial||"";$("iNotes").value=i.notes||"";
+$("itemDelete").style.display=id?"inline-block":"none";$("itemDlg").showModal()
+}
+$("itemForm").onsubmit=e=>{
+e.preventDefault();let i=ei?(d.items||[]).find(x=>x.id===ei):{id:uid()};
+Object.assign(i,{brand:$("iBrand").value,type:$("iType").value,model:$("iModel").value.trim(),cost:Number($("iCost").value||0),sale:Number($("iSale").value||0),qty:Number($("iQty").value||0),condition:$("iCondition").value,serial:$("iSerial").value.trim(),notes:$("iNotes").value.trim(),updatedAt:Date.now()});
+if(!ei){d.items=d.items||[];d.items.push(i)}save();$("itemDlg").close();all()
+}
+window.delItem=id=>{if(confirm("¿Eliminar este artículo?")){d.items=(d.items||[]).filter(x=>x.id!==id);save();all()}}
+$("itemDelete").onclick=()=>{if(ei){delItem(ei);$("itemDlg").close()}};$("itemCancel").onclick=()=>$("itemDlg").close();
+
 function renderDash(){$("openCount").textContent=d.repairs.filter(r=>r.status!=="delivered").length;$("readyCount").textContent=d.repairs.filter(r=>r.status==="ready").length;$("tradeCount").textContent=d.trades.filter(t=>t.status==="pending").length;$("tradeValue").textContent=money(d.trades.filter(t=>t.status==="accepted").reduce((s,t)=>s+Number(t.offer||0),0));let a=[...d.repairs.map(x=>({n:x.brand+" "+x.model,t:x.updatedAt})),...d.trades.map(x=>({n:"Trade-In "+x.brand+" "+x.model,t:x.updatedAt}))].sort((a,b)=>b.t-a.t).slice(0,5);$("recent").innerHTML=a.map(x=>`<div class="muted" style="padding:7px 0">${x.n}</div>`).join("")||"<div class='muted'>Sin actividad.</div>"}
-function all(){apply();renderRepairs($("repairSearch").value||"");renderTrades($("tradeSearch").value||"");renderDash()}
+function all(){apply();renderRepairs($("repairSearch").value||"");renderTrades($("tradeSearch").value||"");renderItems($("itemSearch")?.value||"");renderDash()}
 window.openRepair=id=>{er=id||null;let r=id?d.repairs.find(x=>x.id===id):{};$("repairTitle").textContent=id?"Editar reparación":"Nueva reparación";$("rClient").value=r.client||"";$("rPhone").value=r.phone||"";$("rCategory").value=r.category||"Teléfono";$("rBrand").value=r.brand||"";$("rModel").value=r.model||"";$("rSerial").value=r.serial||"";$("rAccessories").value=r.accessories||"";$("rIssue").value=r.issue||"";$("rEstimate").value=r.estimate||"";$("rDeposit").value=r.deposit||"";$("rStatus").value=r.status||"received";$("rNotes").value=r.notes||"";$("repairDelete").style.display=id?"inline-block":"none";$("repairDlg").showModal()}
 $("repairForm").onsubmit=e=>{e.preventDefault();let r=er?d.repairs.find(x=>x.id===er):{id:uid()};Object.assign(r,{client:$("rClient").value,phone:$("rPhone").value,category:$("rCategory").value,brand:$("rBrand").value,model:$("rModel").value,serial:$("rSerial").value,accessories:$("rAccessories").value,issue:$("rIssue").value,estimate:Number($("rEstimate").value||0),deposit:Number($("rDeposit").value||0),status:$("rStatus").value,notes:$("rNotes").value,updatedAt:Date.now()});if(!er)d.repairs.push(r);save();$("repairDlg").close();all()}
 window.delRepair=id=>{if(confirm("¿Eliminar esta reparación?")){d.repairs=d.repairs.filter(x=>x.id!==id);save();all()}};$("repairDelete").onclick=()=>{if(er){delRepair(er);$("repairDlg").close()}};$("repairCancel").onclick=()=>$("repairDlg").close();
@@ -61,5 +110,5 @@ window.openTrade=id=>{et=id||null;let t=id?d.trades.find(x=>x.id===id):{};$("tra
 $("tradeForm").onsubmit=e=>{e.preventDefault();let t=et?d.trades.find(x=>x.id===et):{id:uid()};Object.assign(t,{client:$("tClient").value,phone:$("tPhone").value,category:$("tCategory").value,brand:$("tBrand").value,model:$("tModel").value,variant:$("tVariant").value,serial:$("tSerial").value,condition:$("tCondition").value,offer:Number($("tOffer").value||0),resale:Number($("tResale").value||0),status:$("tStatus").value,notes:$("tNotes").value,updatedAt:Date.now()});if(!et)d.trades.push(t);save();$("tradeDlg").close();all()}
 window.delTrade=id=>{if(confirm("¿Eliminar este Trade-In?")){d.trades=d.trades.filter(x=>x.id!==id);save();all()}};$("tradeDelete").onclick=()=>{if(et){delTrade(et);$("tradeDlg").close()}};$("tradeCancel").onclick=()=>$("tradeDlg").close();
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));$(b.dataset.v).classList.add("active");document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("active",x===b));all()});
-$("newRepair").onclick=()=>openRepair();$("newTrade").onclick=()=>openTrade();$("repairSearch").oninput=e=>renderRepairs(e.target.value);$("tradeSearch").oninput=e=>renderTrades(e.target.value);$("themeBtn").onclick=()=>{d.settings.theme=d.settings.theme==="dark"?"light":"dark";save();all()};$("saveSettings").onclick=()=>{d.settings.businessName=$("businessName").value||"Repair Hub";d.settings.businessPhone=$("businessPhone").value;d.settings.theme=$("themeSelect").value;save();all()};all();
+$("newRepair").onclick=()=>openRepair();$("newTrade").onclick=()=>openTrade();$("newItem").onclick=()=>openItem();$("repairSearch").oninput=e=>renderRepairs(e.target.value);$("tradeSearch").oninput=e=>renderTrades(e.target.value);$("itemSearch").oninput=e=>renderItems(e.target.value);$("themeBtn").onclick=()=>{d.settings.theme=d.settings.theme==="dark"?"light":"dark";save();all()};$("saveSettings").onclick=()=>{d.settings.businessName=$("businessName").value||"Repair Hub";d.settings.businessPhone=$("businessPhone").value;d.settings.theme=$("themeSelect").value;save();all()};all();
 </script></body></html>

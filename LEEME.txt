@@ -1,1 +1,23 @@
-Sistema de reparaciones y Trade-In. Guarda localmente. Para sincronizar varios dispositivos conviene conectarlo a un proyecto Firebase separado.
+Repair Hub — Reparaciones + Trade-In + Artículos
+
+Nueva pestaña Artículos:
+- Marcas: Apple, Samsung, Nintendo, PlayStation, Xbox y Otro.
+- Tipo de artículo: Teléfono, Consola, Tablet, Control, Accesorio, Pieza u Otro.
+- Modelo.
+- Costo.
+- Precio de venta.
+- Cantidad en inventario.
+- Condición.
+- Serial / SKU.
+- Notas.
+- Calcula margen estimado por unidad.
+- Permite buscar, editar y eliminar artículos.
+
+La app también conserva:
+- Reparaciones.
+- Trade-In.
+- Resumen.
+- Ajustes.
+- Tema claro/oscuro.
+
+Esta versión guarda los datos en el dispositivo. Para sincronizar entre iPhone, iPad y computadora se puede conectar luego a un proyecto Firebase separado.
