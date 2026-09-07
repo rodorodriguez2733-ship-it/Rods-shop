@@ -1,0 +1,1 @@
+Sistema de reparaciones y Trade-In. Guarda localmente. Para sincronizar varios dispositivos conviene conectarlo a un proyecto Firebase separado.
