@@ -1,23 +1,12 @@
-Repair Hub — Reparaciones + Trade-In + Artículos
+Repair Hub moderno — Reparaciones + Trade-In + Artículos
 
-Nueva pestaña Artículos:
+Incluye:
+- Fecha y hora en reparaciones y Trade-In.
 - Marcas: Apple, Samsung, Nintendo, PlayStation, Xbox y Otro.
-- Tipo de artículo: Teléfono, Consola, Tablet, Control, Accesorio, Pieza u Otro.
-- Modelo.
-- Costo.
-- Precio de venta.
-- Cantidad en inventario.
-- Condición.
-- Serial / SKU.
-- Notas.
-- Calcula margen estimado por unidad.
-- Permite buscar, editar y eliminar artículos.
-
-La app también conserva:
-- Reparaciones.
-- Trade-In.
-- Resumen.
-- Ajustes.
+- Métodos de pago: ATH Móvil, Efectivo, Tarjeta, Transferencia y Otro.
+- Botón “Enviar mensaje” para abrir Mensajes/SMS con un resumen de la reparación o Trade-In.
+- Pestaña Artículos con marca, tipo, modelo, costo, venta, cantidad, condición, fecha de entrada, método de pago, serial/SKU y notas.
 - Tema claro/oscuro.
+- Diseño móvil más moderno.
 
-Esta versión guarda los datos en el dispositivo. Para sincronizar entre iPhone, iPad y computadora se puede conectar luego a un proyecto Firebase separado.
+Nota: los datos siguen guardándose localmente en este dispositivo hasta que se conecte a Firebase.
