@@ -1,13 +1,21 @@
-Repair Hub Pro V7
+Repair Hub Pro V9
 
-Corregido:
-- CLIENTES y TRANSACCIONES ya NO aparecen en los botones pequeños.
-- Solo quedan los dos botones grandes de arriba.
-- Los botones pequeños quedan: Resumen, Reparaciones, Trade-In, Artículos y Ajustes.
+Nuevos tipos añadidos:
+- Control
+- Laptop
+- PC
+- Smartwatch
+- Accesorio
+
+Se añadieron en:
+- Reparaciones
+- Trade-In
+- Artículos
 
 Para confirmar que cargó:
-debe decir arriba:
-V7 · SIN BOTONES PEQUEÑOS DUPLICADOS
+V9 · MÁS TIPOS DE EQUIPO
 
-Reemplaza primero index.html en GitHub.
-También reemplaza sw.js para evitar que Safari use la versión anterior.
+En GitHub reemplaza:
+1. index.html
+2. sw.js
+3. manifest.webmanifest (opcional)
