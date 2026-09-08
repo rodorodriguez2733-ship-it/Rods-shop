@@ -1,11 +1,23 @@
-Repair Hub — Artículos divididos por marca y condición
+Repair Hub Pro — estilo gamer / tipo tienda de videojuegos
 
-En Artículos:
-- Marcas separadas: Apple, Samsung, Nintendo, PlayStation, Xbox y Otro.
-- Dentro de cada marca se separan:
-  - Nuevos
-  - Usados
-  - Refurbished
-  - Para piezas
-- También puedes filtrar arriba por marca y condición.
-- Mantiene fecha, método de pago, costo, precio de venta, stock, serial/SKU y notas.
+Incluye todo lo pedido:
+- Diseño más animado y moderno, estilo gamer inspirado en una tienda de videojuegos.
+- Reparaciones de teléfonos, consolas, tablets y otros.
+- Trade-In.
+- Inventario / Artículos.
+- Marcas: Apple, Samsung, Nintendo, PlayStation, Xbox y Otro.
+- Artículos divididos por marca y condición:
+  Nuevo, Usado, Refurbished, Para piezas.
+- Fecha y hora.
+- Métodos de pago: ATH Móvil, Efectivo, Tarjeta, Transferencia, Otro.
+- Foto opcional en Reparaciones, Trade-In y Artículos.
+- Botón de enviar por WhatsApp y Mensaje/SMS.
+- Botón de compartir foto (cuando el navegador lo permita).
+- Barra de progreso de reparación que llega al 100% al entregar.
+- Guarda datos localmente en el dispositivo.
+
+Para usar en GitHub Pages:
+sube o reemplaza:
+- index.html
+- manifest.webmanifest
+- sw.js

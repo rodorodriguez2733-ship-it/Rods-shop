@@ -1,269 +1,1045 @@
-<!doctype html><html lang="es"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Repair Hub">
-<link rel="manifest" href="manifest.webmanifest"><title>Repair Hub</title>
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Repair Hub Pro">
+<meta name="theme-color" content="#101114">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Repair Hub Pro</title>
 <style>
-:root{--bg:#f4f6f8;--panel:#fff;--text:#101216;--muted:#707782;--line:#e4e8ee;--accent:#0a84ff;--accent2:#111827;--red:#dc2626;--green:#16a34a;--gold:#b98b35;--shadow:0 10px 28px rgba(16,24,40,.07)}
-[data-theme=dark]{--bg:#0b0d10;--panel:#14171b;--text:#f5f7fa;--muted:#9ca3af;--line:#2b3037;--accent2:#f5f7fa;--shadow:0 14px 32px rgba(0,0,0,.28)}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Arial;background:var(--bg);color:var(--text)}
-button,input,select,textarea{font:inherit}.app{max-width:1100px;margin:auto}header{position:sticky;top:0;background:var(--panel);border-bottom:1px solid var(--line);padding:12px;z-index:10}
-.top{display:flex;align-items:center;gap:10px}.brand{flex:1;font-weight:900;font-size:21px}.sub{font-size:11px;color:var(--muted)}
-.icon{width:42px;height:42px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text)}
-.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}.tabs button{padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);font-weight:800}.tabs button.active{background:var(--text);color:var(--panel)}
-main{padding:12px}.view{display:none}.view.active{display:block}.toolbar{display:flex;gap:8px;margin-bottom:10px}.toolbar input{flex:1}
-input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--text)}
-.primary{border:0;border-radius:9px;background:var(--accent);color:#fff;padding:10px 13px;font-weight:900}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.stat,.card,.settings{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px;margin-bottom:9px}.stat .n{font-size:25px;font-weight:950}.stat .l{font-size:12px;color:var(--muted)}
-.cardtop{display:flex;justify-content:space-between;gap:8px}.title{font-weight:900}.muted{color:var(--muted);font-size:12px}.badge{padding:4px 8px;border-radius:999px;font-size:11px;font-weight:900;background:#e5e7eb;color:#374151}
-.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:9px}.meta div{background:var(--bg);padding:8px;border-radius:8px}.meta b,.meta span{display:block;font-size:12px}.meta span{color:var(--muted)}
-.actions{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}.actions button{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:8px;padding:7px 9px;font-weight:800}.danger{color:var(--red)!important}
-dialog{border:0;border-radius:16px;width:min(94vw,600px);padding:0;background:var(--panel);color:var(--text)}dialog::backdrop{background:#0006}.modal{padding:16px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}label{display:block;font-size:12px;font-weight:800;margin:9px 0 4px}textarea{min-height:70px}.modalActions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}.modalActions button{padding:9px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--text);font-weight:800}.modalActions .save{background:var(--text);color:var(--panel)}
-@media(max-width:700px){.grid{grid-template-columns:1fr 1fr}.meta{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.toolbar{flex-direction:column}}
-
-header{backdrop-filter:saturate(160%) blur(18px);box-shadow:0 1px 0 rgba(0,0,0,.02)}
-.brand{letter-spacing:-.35px}.sub{letter-spacing:.08em}
-.tabs{overflow-x:auto;grid-template-columns:repeat(5,minmax(100px,1fr));padding-bottom:2px}
-.tabs::-webkit-scrollbar{display:none}
-.tabs button{min-height:44px;transition:.2s ease}
-.tabs button.active{box-shadow:0 6px 18px rgba(0,0,0,.12)}
-.stat,.card,.settings{box-shadow:var(--shadow)}
-.card{padding:14px}
-.title{font-size:16px;letter-spacing:-.2px}
-.badge{white-space:nowrap}
-.primary{min-height:44px;box-shadow:0 7px 18px rgba(10,132,255,.18)}
-.actions button{min-height:40px}
-.actions .msg{color:var(--accent);border-color:rgba(10,132,255,.3)}
-.paypill{display:inline-flex;align-items:center;gap:5px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:4px 8px;font-size:11px;font-weight:800;color:var(--muted);margin-top:5px}
-.datetime{font-size:12px;color:var(--muted);margin-top:3px}
-@media(max-width:700px){
-  header{padding:10px}
-  .brand{font-size:19px}
-  .tabs{display:flex}
-  .tabs button{flex:0 0 auto;min-width:104px}
-  main{padding:10px}
-  .grid{grid-template-columns:1fr 1fr!important}
-  .card{border-radius:15px}
+:root{
+  --bg:#0b0d12;
+  --panel:#141821;
+  --panel2:#1a2030;
+  --line:#253047;
+  --text:#f5f7fb;
+  --muted:#9ca6ba;
+  --red:#ef4444;
+  --blue:#3b82f6;
+  --green:#22c55e;
+  --gold:#f59e0b;
+  --soft:#0f1522;
+  --shadow:0 14px 36px rgba(0,0,0,.32);
+  --radius:18px;
 }
+[data-theme="light"]{
+  --bg:#f5f7fb;
+  --panel:#ffffff;
+  --panel2:#f5f7fb;
+  --line:#dbe3f0;
+  --text:#101114;
+  --muted:#6b7280;
+  --soft:#edf2f7;
+  --shadow:0 12px 28px rgba(15,23,42,.08);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+body{min-height:100vh}
+.app{max-width:1260px;margin:0 auto;min-height:100vh}
+header{
+  position:sticky;top:0;z-index:30;
+  padding:14px;
+  backdrop-filter: blur(16px) saturate(160%);
+  background:linear-gradient(180deg, rgba(9,10,14,.92), rgba(9,10,14,.78));
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+[data-theme="light"] header{
+  background:rgba(255,255,255,.82);
+  border-bottom:1px solid rgba(15,23,42,.08);
+}
+.hero{
+  display:flex;align-items:center;gap:12px;
+  background:linear-gradient(135deg, rgba(239,68,68,.16), rgba(59,130,246,.14));
+  border:1px solid rgba(255,255,255,.06);
+  padding:14px;border-radius:22px;box-shadow:var(--shadow)
+}
+.logoBox{
+  width:52px;height:52px;border-radius:16px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg, var(--red), var(--blue));
+  font-size:24px;font-weight:900;color:white;
+  box-shadow:0 12px 24px rgba(239,68,68,.22)
+}
+.brand{flex:1;min-width:0}
+.brand h1{margin:0;font-size:24px;letter-spacing:-.5px}
+.brand p{margin:3px 0 0;color:var(--muted);font-size:12px;letter-spacing:.10em}
+.headerActions{display:flex;gap:8px;align-items:center}
+.iconBtn,.pillBtn,.tabBtn,.primaryBtn,.ghostBtn{
+  border:1px solid var(--line);color:var(--text);background:var(--panel);
+  border-radius:14px;cursor:pointer;transition:.2s ease transform,.2s ease background,.2s ease border-color,.2s ease box-shadow;
+}
+.iconBtn{width:46px;height:46px;font-size:20px}
+.pillBtn{padding:10px 14px;font-weight:800}
+.primaryBtn{
+  background:linear-gradient(135deg,var(--red),#b91c1c);
+  color:#fff;border:0;padding:12px 16px;font-weight:900;
+  box-shadow:0 10px 22px rgba(239,68,68,.22)
+}
+.primaryBtn:hover,.iconBtn:hover,.pillBtn:hover,.ghostBtn:hover,.tabBtn:hover{transform:translateY(-1px)}
+.ghostBtn{padding:10px 12px;background:transparent}
+.tabs{
+  margin-top:12px;
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px
+}
+.tabBtn{padding:11px 10px;font-weight:900;background:var(--panel)}
+.tabBtn.active{
+  background:linear-gradient(135deg, rgba(239,68,68,.18), rgba(59,130,246,.16));
+  border-color:rgba(239,68,68,.35);
+  box-shadow:0 0 0 1px rgba(239,68,68,.12) inset
+}
+main{padding:14px}
+.view{display:none}
+.view.active{display:block}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.stat{
+  background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;
+  box-shadow:var(--shadow);position:relative;overflow:hidden
+}
+.stat::after{
+  content:"";position:absolute;inset:auto -30px -30px auto;width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle, rgba(59,130,246,.18), transparent 70%)
+}
+.stat .num{font-size:28px;font-weight:950}
+.stat .lbl{font-size:12px;color:var(--muted);margin-top:4px}
+.card,.panel{
+  background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)
+}
+.panel{padding:14px}
+.card{
+  padding:14px;margin-bottom:10px;animation:fadeUp .25s ease
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}
+}
+.cardTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.title{font-weight:950;font-size:18px;letter-spacing:-.3px}
+.sub{font-size:12px;color:var(--muted);margin-top:4px}
+.datetime{font-size:12px;color:var(--muted);margin-top:4px}
+.badge{
+  display:inline-flex;align-items:center;border-radius:999px;padding:6px 10px;
+  font-size:11px;font-weight:900;white-space:nowrap
+}
+.status-received{background:rgba(59,130,246,.12);color:#60a5fa}
+.status-diagnosis{background:rgba(245,158,11,.14);color:#fbbf24}
+.status-parts{background:rgba(168,85,247,.14);color:#c084fc}
+.status-repairing{background:rgba(34,197,94,.14);color:#4ade80}
+.status-ready{background:rgba(14,165,233,.14);color:#38bdf8}
+.status-delivered{background:rgba(148,163,184,.16);color:#cbd5e1}
+.trade-pending{background:rgba(245,158,11,.14);color:#fbbf24}
+.trade-accepted{background:rgba(34,197,94,.14);color:#4ade80}
+.trade-declined{background:rgba(239,68,68,.14);color:#f87171}
+.meta{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px
+}
+.meta .box{
+  background:var(--panel2);border:1px solid var(--line);padding:10px;border-radius:14px
+}
+.meta b{display:block;font-size:12px}
+.meta span{display:block;font-size:12px;color:var(--muted);margin-top:3px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.actions button{
+  border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:12px;
+  padding:9px 12px;font-weight:900;cursor:pointer
+}
+.actions .wa{color:#22c55e;border-color:rgba(34,197,94,.26)}
+.actions .sms{color:#60a5fa;border-color:rgba(59,130,246,.26)}
+.actions .share{color:#f59e0b;border-color:rgba(245,158,11,.28)}
+.actions .danger{color:#f87171}
+.toolbar{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.search{flex:1}
+.search input, .toolbar select{
+  width:100%;padding:12px 14px;background:var(--panel);color:var(--text);
+  border:1px solid var(--line);border-radius:14px
+}
+.filtersTitle{font-size:12px;color:var(--muted);font-weight:900;margin:6px 0}
+.filterRow{display:flex;gap:8px;overflow:auto;padding-bottom:4px;margin-bottom:8px}
+.filterRow::-webkit-scrollbar{display:none}
+.filterRow button{
+  flex:0 0 auto;padding:10px 13px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-weight:900
+}
+.filterRow button.active{
+  background:linear-gradient(135deg, rgba(239,68,68,.18), rgba(59,130,246,.16));
+  border-color:rgba(59,130,246,.32)
+}
+.brandSection{margin-top:14px}
+.brandHeader{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  margin-bottom:8px;padding:4px 2px
+}
+.brandHeader h3{margin:0;font-size:20px}
+.brandCount{font-size:12px;color:var(--muted);font-weight:900}
+.conditionSection{
+  background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:18px;padding:12px;margin-bottom:12px
+}
+.condHead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.condHead strong{font-size:15px}
+.condHead span{font-size:11px;color:var(--muted);font-weight:900}
+.progressWrap{margin-top:12px}
+.progressTop{display:flex;justify-content:space-between;gap:8px;font-size:11px;font-weight:900;color:var(--muted);margin-bottom:6px}
+.progressTrack{
+  height:10px;background:var(--panel2);border:1px solid var(--line);border-radius:999px;overflow:hidden
+}
+.progressFill{
+  height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--blue),var(--green));border-radius:999px;transition:width .3s ease
+}
+.progressSteps{
+  display:flex;justify-content:space-between;gap:6px;margin-top:6px;color:var(--muted);font-size:9px
+}
+.thumb{
+  width:86px;height:86px;object-fit:cover;border-radius:14px;border:1px solid var(--line);margin-top:10px
+}
+.payPill{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;
+  background:var(--panel2);border:1px solid var(--line);font-size:11px;font-weight:900;color:var(--muted);margin-top:8px
+}
+.empty{padding:28px 10px;text-align:center;color:var(--muted)}
+.settingsGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:block;font-size:12px;font-weight:900;margin:10px 0 5px}
+input,select,textarea{
+  width:100%;padding:11px 12px;background:var(--panel2);color:var(--text);
+  border:1px solid var(--line);border-radius:13px
+}
+textarea{min-height:78px;resize:vertical}
+dialog{
+  border:0;padding:0;border-radius:22px;max-height:92vh;overflow:auto;
+  width:min(96vw,680px);background:var(--panel);color:var(--text);box-shadow:0 30px 90px rgba(0,0,0,.42)
+}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+.modal{padding:18px}
+.modal h2{margin:0 0 10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modalActions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:16px}
+.modalActions button{
+  padding:10px 13px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font-weight:900
+}
+.modalActions .save{background:linear-gradient(135deg,var(--red),#b91c1c);border:0;color:#fff}
+.photoPreview{margin-top:8px;display:none}
+.photoPreview img{width:100%;max-height:240px;object-fit:cover;border-radius:14px;border:1px solid var(--line)}
+.note{font-size:11px;color:var(--muted);margin-top:6px}
+.recentItem{padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--panel2);margin-top:8px}
+.syncNote{font-size:11px;color:var(--muted);margin-top:8px}
+@media(max-width:960px){
+  .grid4{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:720px){
+  .tabs{display:flex;overflow:auto}
+  .tabs button{min-width:110px;flex:0 0 auto}
+  .settingsGrid,.grid2,.meta{grid-template-columns:1fr}
+  .toolbar{flex-direction:column;align-items:stretch}
+  .search{width:100%}
+  .headerActions{flex-wrap:wrap;justify-content:flex-end}
+  .brand h1{font-size:21px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="hero">
+      <div class="logoBox">🎮</div>
+      <div class="brand">
+        <h1 id="brandName">Repair Hub Pro</h1>
+        <p>TELÉFONOS · CONSOLAS · TRADE-IN · INVENTARIO</p>
+      </div>
+      <div class="headerActions">
+        <button class="pillBtn" id="themeBtn">🌙/☀️</button>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tabBtn active" data-view="dashboard">Resumen</button>
+      <button class="tabBtn" data-view="repairs">Reparaciones</button>
+      <button class="tabBtn" data-view="trade">Trade-In</button>
+      <button class="tabBtn" data-view="items">Artículos</button>
+      <button class="tabBtn" data-view="settings">Ajustes</button>
+    </div>
+  </header>
 
+  <main>
+    <section id="dashboard" class="view active">
+      <div class="grid4">
+        <div class="stat"><div class="num" id="statRepairs">0</div><div class="lbl">Reparaciones abiertas</div></div>
+        <div class="stat"><div class="num" id="statReady">0</div><div class="lbl">Listas para entregar</div></div>
+        <div class="stat"><div class="num" id="statTrades">0</div><div class="lbl">Trade-In pendientes</div></div>
+        <div class="stat"><div class="num" id="statItems">0</div><div class="lbl">Artículos en inventario</div></div>
+      </div>
+      <div class="panel">
+        <h3 style="margin:0 0 8px">Actividad reciente</h3>
+        <div id="recentList"></div>
+      </div>
+    </section>
 
-.filterTitle{font-size:12px;font-weight:900;color:var(--muted);margin:7px 2px 5px}
-.brandFilters{display:flex;gap:7px;overflow-x:auto;padding:2px 0 9px;margin-bottom:2px}
-.brandFilters::-webkit-scrollbar{display:none}
-.brandFilters button{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:999px;padding:9px 13px;font-weight:850;min-height:40px}
-.brandFilters button.active{background:var(--text);color:var(--panel);border-color:var(--text)}
-.brandSection{margin:14px 0 20px}
-.brandHeader{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 2px 8px}
-.brandHeader h3{margin:0;font-size:18px;letter-spacing:-.2px}
-.brandCount{font-size:12px;color:var(--muted);font-weight:800}
-.conditionSection{margin:8px 0 13px;padding:10px;border-radius:13px;background:var(--bg);border:1px solid var(--line)}
-.conditionHeader{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.conditionHeader strong{font-size:14px}
-.conditionHeader span{font-size:11px;color:var(--muted);font-weight:800}
-.conditionSection .card{margin-bottom:8px}
+    <section id="repairs" class="view">
+      <div class="toolbar">
+        <div class="search"><input id="repairSearch" placeholder="Buscar cliente, teléfono, modelo, serial..."></div>
+        <button class="primaryBtn" id="newRepairBtn">+ Nueva reparación</button>
+      </div>
+      <div id="repairList"></div>
+    </section>
 
-</style></head><body><div class="app">
-<header><div class="top"><div class="brand">🛠️ <span id="brandName">Repair Hub</span><div class="sub">TELÉFONOS · CONSOLAS · TRADE-IN</div></div><button class="icon" id="themeBtn">◐</button></div>
-<div class="tabs"><button data-v="dashboard" class="active">Resumen</button><button data-v="repairs">Reparaciones</button><button data-v="trade">Trade-In</button><button data-v="items">Artículos</button><button data-v="settings">Ajustes</button></div></header>
-<main>
-<section id="dashboard" class="view active"><div class="grid"><div class="stat"><div class="n" id="openCount">0</div><div class="l">Reparaciones abiertas</div></div><div class="stat"><div class="n" id="readyCount">0</div><div class="l">Listas</div></div><div class="stat"><div class="n" id="tradeCount">0</div><div class="l">Trade-In pendientes</div></div><div class="stat"><div class="n" id="tradeValue">$0.00</div><div class="l">Ofertas aceptadas</div></div></div><div class="settings"><b>Actividad reciente</b><div id="recent"></div></div></section>
-<section id="repairs" class="view"><div class="toolbar"><input id="repairSearch" placeholder="Buscar cliente, modelo, serial..."><button class="primary" id="newRepair">+ Nueva reparación</button></div><div id="repairList"></div></section>
-<section id="trade" class="view"><div class="toolbar"><input id="tradeSearch" placeholder="Buscar modelo, cliente..."><button class="primary" id="newTrade">+ Nuevo Trade-In</button></div><div id="tradeList"></div></section>
+    <section id="trade" class="view">
+      <div class="toolbar">
+        <div class="search"><input id="tradeSearch" placeholder="Buscar cliente, modelo, serial, condición..."></div>
+        <button class="primaryBtn" id="newTradeBtn">+ Nuevo Trade-In</button>
+      </div>
+      <div id="tradeList"></div>
+    </section>
 
-<section id="items" class="view">
-<div class="toolbar"><input id="itemSearch" placeholder="Buscar artículo, marca, modelo..."><button class="primary" id="newItem">+ Nuevo artículo</button></div>
+    <section id="items" class="view">
+      <div class="toolbar">
+        <div class="search"><input id="itemSearch" placeholder="Buscar artículo, marca, modelo..."></div>
+        <button class="primaryBtn" id="newItemBtn">+ Nuevo artículo</button>
+      </div>
 
-<div class="filterTitle">Marca</div>
-<div class="brandFilters" id="brandFilters">
-  <button type="button" data-brand="Todas" class="active">Todas</button>
-  <button type="button" data-brand="Apple">Apple</button>
-  <button type="button" data-brand="Samsung">Samsung</button>
-  <button type="button" data-brand="Nintendo">Nintendo</button>
-  <button type="button" data-brand="PlayStation">PlayStation</button>
-  <button type="button" data-brand="Xbox">Xbox</button>
-  <button type="button" data-brand="Otro">Otro</button>
+      <div class="filtersTitle">Marca</div>
+      <div class="filterRow" id="brandFilters">
+        <button class="active" data-brand="Todas">Todas</button>
+        <button data-brand="Apple">Apple</button>
+        <button data-brand="Samsung">Samsung</button>
+        <button data-brand="Nintendo">Nintendo</button>
+        <button data-brand="PlayStation">PlayStation</button>
+        <button data-brand="Xbox">Xbox</button>
+        <button data-brand="Otro">Otro</button>
+      </div>
+
+      <div class="filtersTitle">Condición</div>
+      <div class="filterRow" id="conditionFilters">
+        <button class="active" data-condition="Todas">Todos</button>
+        <button data-condition="Nuevo">Nuevos</button>
+        <button data-condition="Usado">Usados</button>
+        <button data-condition="Refurbished">Refurbished</button>
+        <button data-condition="Para piezas">Para piezas</button>
+      </div>
+
+      <div id="itemList"></div>
+    </section>
+
+    <section id="settings" class="view">
+      <div class="panel">
+        <h3 style="margin:0 0 8px">Ajustes del negocio</h3>
+        <div class="settingsGrid">
+          <div>
+            <label>Nombre del negocio</label>
+            <input id="businessNameInput">
+          </div>
+          <div>
+            <label>Teléfono del negocio / WhatsApp</label>
+            <input id="businessPhoneInput" placeholder="7875551234">
+          </div>
+          <div>
+            <label>Tema</label>
+            <select id="themeSelect">
+              <option value="dark">Oscuro gamer</option>
+              <option value="light">Claro</option>
+            </select>
+          </div>
+          <div>
+            <label>Mensaje de nota</label>
+            <input id="footerNoteInput" placeholder="Gracias por preferirnos">
+          </div>
+        </div>
+        <div class="modalActions" style="justify-content:flex-start;margin-top:14px">
+          <button class="save" id="saveSettingsBtn">Guardar ajustes</button>
+        </div>
+        <div class="syncNote">Esta versión guarda datos y fotos en el mismo dispositivo. Si luego quieres sincronizar iPhone, iPad y computadora, se puede conectar a Firebase.</div>
+      </div>
+    </section>
+  </main>
 </div>
 
-<div class="filterTitle">Condición</div>
-<div class="brandFilters" id="conditionFilters">
-  <button type="button" data-condition="Todas" class="active">Todos</button>
-  <button type="button" data-condition="Nuevo">Nuevos</button>
-  <button type="button" data-condition="Usado">Usados</button>
-  <button type="button" data-condition="Refurbished">Refurbished</button>
-  <button type="button" data-condition="Para piezas">Para piezas</button>
-</div>
+<dialog id="repairDialog">
+  <form class="modal" id="repairForm">
+    <h2 id="repairTitle">Nueva reparación</h2>
+    <div class="grid2">
+      <div><label>Fecha</label><input id="rDate" type="date"></div>
+      <div><label>Hora</label><input id="rTime" type="time"></div>
+    </div>
+    <div class="grid2">
+      <div><label>Cliente (opcional)</label><input id="rClient"></div>
+      <div><label>Teléfono / WhatsApp (opcional)</label><input id="rPhone"></div>
+    </div>
+    <div class="grid2">
+      <div><label>Tipo de equipo</label><select id="rCategory"><option>Teléfono</option><option>Consola</option><option>Tablet</option><option>Otro</option></select></div>
+      <div><label>Marca</label><select id="rBrand"><option>Apple</option><option>Samsung</option><option>Nintendo</option><option>PlayStation</option><option>Xbox</option><option>Otro</option></select></div>
+    </div>
+    <label>Modelo</label><input id="rModel" placeholder="iPhone 15, PS5 Slim, Switch OLED...">
+    <div class="grid2">
+      <div><label>IMEI / Serial (opcional)</label><input id="rSerial"></div>
+      <div><label>Accesorios recibidos</label><input id="rAccessories"></div>
+    </div>
+    <label>Problema reportado</label><textarea id="rIssue" placeholder="Pantalla rota, no enciende, HDMI, batería..."></textarea>
+    <div class="grid2">
+      <div><label>Estimado ($)</label><input id="rEstimate" type="number" min="0" step=".01"></div>
+      <div><label>Depósito ($)</label><input id="rDeposit" type="number" min="0" step=".01"></div>
+    </div>
+    <div class="grid2">
+      <div>
+        <label>Estado</label>
+        <select id="rStatus">
+          <option value="received">Recibido</option>
+          <option value="diagnosis">Diagnóstico</option>
+          <option value="parts">Esperando piezas</option>
+          <option value="repairing">En reparación</option>
+          <option value="ready">Listo</option>
+          <option value="delivered">Entregado</option>
+        </select>
+      </div>
+      <div>
+        <label>Método de pago</label>
+        <select id="rPayment">
+          <option>ATH Móvil</option>
+          <option>Efectivo</option>
+          <option>Tarjeta</option>
+          <option>Transferencia</option>
+          <option>Otro</option>
+        </select>
+      </div>
+    </div>
+    <label>Foto del equipo (opcional)</label>
+    <input id="rPhoto" type="file" accept="image/*">
+    <div class="photoPreview" id="rPhotoPreview"><img id="rPhotoImg" alt="Foto reparación"></div>
+    <label>Notas</label><textarea id="rNotes"></textarea>
+    <div class="modalActions">
+      <button type="button" id="repairDeleteBtn" style="color:#f87171;display:none">Eliminar</button>
+      <button type="button" id="repairCancelBtn">Cancelar</button>
+      <button class="save" type="submit">Guardar</button>
+    </div>
+  </form>
+</dialog>
 
-<div id="itemList"></div>
-</section>
-<section id="settings" class="view"><div class="settings"><label>Nombre del negocio</label><input id="businessName"><label>Teléfono</label><input id="businessPhone"><label>Tema</label><select id="themeSelect"><option value="light">Claro</option><option value="dark">Oscuro</option></select></div><button class="primary" id="saveSettings">Guardar ajustes</button></section>
-</main></div>
+<dialog id="tradeDialog">
+  <form class="modal" id="tradeForm">
+    <h2 id="tradeTitle">Nuevo Trade-In</h2>
+    <div class="grid2">
+      <div><label>Fecha</label><input id="tDate" type="date"></div>
+      <div><label>Hora</label><input id="tTime" type="time"></div>
+    </div>
+    <div class="grid2">
+      <div><label>Cliente (opcional)</label><input id="tClient"></div>
+      <div><label>Teléfono / WhatsApp (opcional)</label><input id="tPhone"></div>
+    </div>
+    <div class="grid2">
+      <div><label>Tipo</label><select id="tCategory"><option>Teléfono</option><option>Consola</option><option>Tablet</option><option>Otro</option></select></div>
+      <div><label>Marca</label><select id="tBrand"><option>Apple</option><option>Samsung</option><option>Nintendo</option><option>PlayStation</option><option>Xbox</option><option>Otro</option></select></div>
+    </div>
+    <label>Modelo</label><input id="tModel">
+    <div class="grid2">
+      <div><label>Capacidad / versión</label><input id="tVariant"></div>
+      <div><label>IMEI / Serial</label><input id="tSerial"></div>
+    </div>
+    <div class="grid2">
+      <div><label>Condición</label><select id="tCondition"><option>Excelente</option><option>Buena</option><option>Regular</option><option>Dañado</option><option>No enciende</option></select></div>
+      <div><label>Método de pago</label><select id="tPayment"><option>ATH Móvil</option><option>Efectivo</option><option>Tarjeta</option><option>Transferencia</option><option>Otro</option></select></div>
+    </div>
+    <div class="grid2">
+      <div><label>Oferta al cliente ($)</label><input id="tOffer" type="number" min="0" step=".01"></div>
+      <div><label>Valor estimado reventa ($)</label><input id="tResale" type="number" min="0" step=".01"></div>
+    </div>
+    <label>Estado</label><select id="tStatus"><option value="pending">Pendiente</option><option value="accepted">Aceptado</option><option value="declined">Rechazado</option></select>
+    <label>Foto del equipo (opcional)</label>
+    <input id="tPhoto" type="file" accept="image/*">
+    <div class="photoPreview" id="tPhotoPreview"><img id="tPhotoImg" alt="Foto trade"></div>
+    <label>Notas</label><textarea id="tNotes"></textarea>
+    <div class="modalActions">
+      <button type="button" id="tradeDeleteBtn" style="color:#f87171;display:none">Eliminar</button>
+      <button type="button" id="tradeCancelBtn">Cancelar</button>
+      <button class="save" type="submit">Guardar</button>
+    </div>
+  </form>
+</dialog>
 
-<dialog id="repairDlg"><form class="modal" id="repairForm"><h2 id="repairTitle">Nueva reparación</h2>
-<div class="grid2"><div><label>Cliente</label><input id="rClient"></div><div><label>Teléfono</label><input id="rPhone"></div></div>
-<div class="grid2"><div><label>Tipo</label><select id="rCategory"><option>Teléfono</option><option>Consola</option><option>Tablet</option><option>Otro</option></select></div><div><label>Marca</label><input id="rBrand"></div></div>
-<label>Modelo</label><input id="rModel"><div class="grid2"><div><label>Fecha</label><input id="rDate" type="date"></div><div><label>Hora</label><input id="rTime" type="time"></div></div><div class="grid2"><div><label>IMEI / Serial</label><input id="rSerial"></div><div><label>Accesorios</label><input id="rAccessories"></div></div>
-<label>Problema reportado</label><textarea id="rIssue"></textarea><div class="grid2"><div><label>Estimado ($)</label><input id="rEstimate" type="number" min="0" step=".01"></div><div><label>Depósito ($)</label><input id="rDeposit" type="number" min="0" step=".01"></div></div>
-<div class="grid2"><div><label>Estado</label><select id="rStatus"><option value="received">Recibido</option><option value="diagnosis">Diagnóstico</option><option value="parts">Esperando piezas</option><option value="repairing">En reparación</option><option value="ready">Listo</option><option value="delivered">Entregado</option></select></div><div><label>Método de pago</label><select id="rPayment"><option>ATH Móvil</option><option>Efectivo</option><option>Tarjeta</option><option>Transferencia</option><option>Otro</option></select></div></div>
-<label>Notas</label><textarea id="rNotes"></textarea><div class="modalActions"><button type="button" id="repairDelete" class="danger" style="display:none">Eliminar</button><button type="button" id="repairCancel">Cancelar</button><button class="save">Guardar</button></div></form></dialog>
+<dialog id="itemDialog">
+  <form class="modal" id="itemForm">
+    <h2 id="itemTitle">Nuevo artículo</h2>
+    <div class="grid2">
+      <div><label>Fecha de entrada</label><input id="iDate" type="date"></div>
+      <div><label>Marca</label><select id="iBrand"><option>Apple</option><option>Samsung</option><option>Nintendo</option><option>PlayStation</option><option>Xbox</option><option>Otro</option></select></div>
+    </div>
+    <div class="grid2">
+      <div><label>Tipo de artículo</label><select id="iType"><option>Teléfono</option><option>Consola</option><option>Tablet</option><option>Control</option><option>Accesorio</option><option>Pieza</option><option>Otro</option></select></div>
+      <div><label>Modelo</label><input id="iModel"></div>
+    </div>
+    <div class="grid2">
+      <div><label>Costo ($)</label><input id="iCost" type="number" min="0" step=".01"></div>
+      <div><label>Precio de venta ($)</label><input id="iSale" type="number" min="0" step=".01"></div>
+    </div>
+    <div class="grid2">
+      <div><label>Cantidad</label><input id="iQty" type="number" min="0" step="1" value="1"></div>
+      <div><label>Condición</label><select id="iCondition"><option>Nuevo</option><option>Usado</option><option>Refurbished</option><option>Para piezas</option></select></div>
+    </div>
+    <div class="grid2">
+      <div><label>Método de pago</label><select id="iPayment"><option>ATH Móvil</option><option>Efectivo</option><option>Tarjeta</option><option>Transferencia</option><option>Otro</option></select></div>
+      <div><label>Teléfono / WhatsApp (opcional)</label><input id="iPhone"></div>
+    </div>
+    <label>Serial / SKU (opcional)</label><input id="iSerial">
+    <label>Foto del artículo (opcional)</label>
+    <input id="iPhoto" type="file" accept="image/*">
+    <div class="photoPreview" id="iPhotoPreview"><img id="iPhotoImg" alt="Foto artículo"></div>
+    <label>Notas</label><textarea id="iNotes"></textarea>
+    <div class="modalActions">
+      <button type="button" id="itemDeleteBtn" style="color:#f87171;display:none">Eliminar</button>
+      <button type="button" id="itemCancelBtn">Cancelar</button>
+      <button class="save" type="submit">Guardar</button>
+    </div>
+  </form>
+</dialog>
 
-<dialog id="tradeDlg"><form class="modal" id="tradeForm"><h2 id="tradeTitle">Nuevo Trade-In</h2>
-<div class="grid2"><div><label>Cliente</label><input id="tClient"></div><div><label>Teléfono</label><input id="tPhone"></div></div>
-<div class="grid2"><div><label>Tipo</label><select id="tCategory"><option>Teléfono</option><option>Consola</option><option>Tablet</option><option>Otro</option></select></div><div><label>Marca</label><input id="tBrand"></div></div>
-<label>Modelo</label><input id="tModel"><div class="grid2"><div><label>Fecha</label><input id="tDate" type="date"></div><div><label>Hora</label><input id="tTime" type="time"></div></div><div class="grid2"><div><label>Capacidad / versión</label><input id="tVariant"></div><div><label>IMEI / Serial</label><input id="tSerial"></div></div>
-<label>Condición</label><select id="tCondition"><option>Excelente</option><option>Buena</option><option>Regular</option><option>Dañado</option><option>No enciende</option></select>
-<div class="grid2"><div><label>Oferta al cliente ($)</label><input id="tOffer" type="number" min="0" step=".01"></div><div><label>Reventa estimada ($)</label><input id="tResale" type="number" min="0" step=".01"></div></div>
-<div class="grid2"><div><label>Estado</label><select id="tStatus"><option value="pending">Pendiente</option><option value="accepted">Aceptado</option><option value="declined">Rechazado</option></select></div><div><label>Método de pago</label><select id="tPayment"><option>ATH Móvil</option><option>Efectivo</option><option>Tarjeta</option><option>Transferencia</option><option>Otro</option></select></div></div>
-<label>Notas</label><textarea id="tNotes"></textarea><div class="modalActions"><button type="button" id="tradeDelete" class="danger" style="display:none">Eliminar</button><button type="button" id="tradeCancel">Cancelar</button><button class="save">Guardar</button></div></form></dialog>
-
-
-<dialog id="itemDlg"><form class="modal" id="itemForm"><h2 id="itemTitle">Nuevo artículo</h2>
-<label>Marca</label>
-<select id="iBrand">
-<option>Apple</option><option>Samsung</option><option>Nintendo</option><option>PlayStation</option><option>Xbox</option><option>Otro</option>
-</select>
-<div class="grid2">
-<div><label>Tipo de artículo</label><select id="iType"><option>Teléfono</option><option>Consola</option><option>Tablet</option><option>Control</option><option>Accesorio</option><option>Pieza</option><option>Otro</option></select></div>
-<div><label>Modelo</label><input id="iModel" placeholder="iPhone 15, PS5 Slim..."></div>
-</div>
-<div class="grid2">
-<div><label>Costo ($)</label><input id="iCost" type="number" min="0" step=".01"></div>
-<div><label>Precio de venta ($)</label><input id="iSale" type="number" min="0" step=".01"></div>
-</div>
-<div class="grid2">
-<div><label>Cantidad</label><input id="iQty" type="number" min="0" step="1" value="1"></div>
-<div><label>Condición</label><select id="iCondition"><option>Nuevo</option><option>Usado</option><option>Refurbished</option><option>Para piezas</option></select></div>
-</div>
-<div class="grid2"><div><label>Fecha de entrada</label><input id="iDate" type="date"></div><div><label>Pago / compra</label><select id="iPayment"><option>ATH Móvil</option><option>Efectivo</option><option>Tarjeta</option><option>Transferencia</option><option>Otro</option></select></div></div><label>Serial / SKU (opcional)</label><input id="iSerial">
-<label>Notas</label><textarea id="iNotes"></textarea>
-<div class="modalActions"><button type="button" id="itemDelete" class="danger" style="display:none">Eliminar</button><button type="button" id="itemCancel">Cancelar</button><button class="save">Guardar</button></div>
-</form></dialog>
 <script>
-const K="repair_tradein_v1";let d=JSON.parse(localStorage.getItem(K)||"null")||{settings:{businessName:"Repair Hub",businessPhone:"",theme:"light"},repairs:[],trades:[],items:[]};let er=null,et=null,ei=null,itemBrandFilter="Todas",itemConditionFilter="Todas";const $=x=>document.getElementById(x),save=()=>localStorage.setItem(K,JSON.stringify(d)),money=n=>"$"+Number(n||0).toFixed(2),uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-function status(s){return({received:"Recibido",diagnosis:"Diagnóstico",parts:"Esperando piezas",repairing:"En reparación",ready:"Listo",delivered:"Entregado"})[s]||s}
-function apply(){document.documentElement.dataset.theme=d.settings.theme;$("brandName").textContent=d.settings.businessName;$("businessName").value=d.settings.businessName;$("businessPhone").value=d.settings.businessPhone;$("themeSelect").value=d.settings.theme}
+const KEY="repair_hub_gamer_pro_v1";
+let data = JSON.parse(localStorage.getItem(KEY) || "null") || {
+  settings:{businessName:"Repair Hub Pro",businessPhone:"",theme:"dark",footerNote:"Gracias por preferirnos"},
+  repairs:[],
+  trades:[],
+  items:[]
+};
 
-function todayISO(){const x=new Date();return x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0")}
-function nowTime(){const x=new Date();return String(x.getHours()).padStart(2,"0")+":"+String(x.getMinutes()).padStart(2,"0")}
-function fmtDate(v){if(!v)return "Sin fecha";const [y,m,d2]=v.split("-");return `${d2}/${m}/${y}`}
-function messageRepair(r){
-  const body=`${d.settings.businessName||"Repair Hub"}%0AReparación: ${r.brand||""} ${r.model||""}%0AFecha: ${fmtDate(r.date)} ${r.time||""}%0AEstado: ${status(r.status)}%0AEstimado: ${money(r.estimate)}%0ABalance: ${money(Number(r.estimate||0)-Number(r.deposit||0))}%0APago: ${r.payment||"No indicado"}`;
-  const phone=(r.phone||"").replace(/\D/g,"");
-  location.href=`sms:${phone}?&body=${body}`;
+let editingRepair=null, editingTrade=null, editingItem=null;
+let itemBrandFilter="Todas", itemConditionFilter="Todas";
+
+const $ = id => document.getElementById(id);
+const money = n => "$" + Number(n||0).toFixed(2);
+const save = () => localStorage.setItem(KEY, JSON.stringify(data));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+
+function todayISO(){
+  const d=new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 }
-function messageTrade(t){
-  const body=`${d.settings.businessName||"Repair Hub"}%0ATrade-In: ${t.brand||""} ${t.model||""}%0AFecha: ${fmtDate(t.date)} ${t.time||""}%0ACondición: ${t.condition||""}%0AOferta: ${money(t.offer)}%0AEstado: ${t.status||""}%0APago: ${t.payment||"No indicado"}`;
-  const phone=(t.phone||"").replace(/\D/g,"");
-  location.href=`sms:${phone}?&body=${body}`;
+function nowHM(){
+  const d=new Date();
+  return `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+}
+function fmtDate(v){
+  if(!v) return "Sin fecha";
+  const [y,m,d]=v.split("-");
+  return `${d}/${m}/${y}`;
+}
+function cleanPhone(v){ return (v||"").replace(/\D/g,""); }
+
+function applyTheme(){
+  document.documentElement.setAttribute("data-theme", data.settings.theme || "dark");
+  $("brandName").textContent = data.settings.businessName || "Repair Hub Pro";
+  $("businessNameInput").value = data.settings.businessName || "";
+  $("businessPhoneInput").value = data.settings.businessPhone || "";
+  $("themeSelect").value = data.settings.theme || "dark";
+  $("footerNoteInput").value = data.settings.footerNote || "";
+}
+function switchView(name){
+  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active", v.id===name));
+  document.querySelectorAll(".tabBtn").forEach(b=>b.classList.toggle("active", b.dataset.view===name));
+}
+document.querySelectorAll(".tabBtn").forEach(btn=>btn.onclick=()=>switchView(btn.dataset.view));
+
+function repairStatusLabel(v){
+  return {received:"Recibido",diagnosis:"Diagnóstico",parts:"Esperando piezas",repairing:"En reparación",ready:"Listo",delivered:"Entregado"}[v] || v;
+}
+function repairStatusClass(v){ return "status-" + v; }
+function tradeStatusLabel(v){
+  return {pending:"Pendiente",accepted:"Aceptado",declined:"Rechazado"}[v] || v;
+}
+function tradeStatusClass(v){
+  return {pending:"trade-pending",accepted:"trade-accepted",declined:"trade-declined"}[v] || "trade-pending";
+}
+function progressInfo(status){
+  const map = {
+    received:{p:15,l:"Recibido"},
+    diagnosis:{p:35,l:"Diagnóstico"},
+    parts:{p:55,l:"Esperando piezas"},
+    repairing:{p:75,l:"En reparación"},
+    ready:{p:90,l:"Listo para entregar"},
+    delivered:{p:100,l:"Entregado"}
+  };
+  return map[status] || map.received;
+}
+function progressHTML(status){
+  const x = progressInfo(status);
+  return `<div class="progressWrap">
+    <div class="progressTop"><span>Proceso de reparación</span><span>${x.p}% · ${x.l}</span></div>
+    <div class="progressTrack"><div class="progressFill" style="width:${x.p}%"></div></div>
+    <div class="progressSteps"><span>Recibido</span><span>Proceso</span><span>Entrega</span></div>
+  </div>`;
 }
 
-function renderRepairs(q=""){q=q.toLowerCase();let a=d.repairs.filter(r=>(r.client+" "+r.phone+" "+r.brand+" "+r.model+" "+r.serial+" "+r.issue).toLowerCase().includes(q)).sort((a,b)=>b.updatedAt-a.updatedAt);$("repairList").innerHTML=a.map(r=>`<div class="card"><div class="cardtop"><div><div class="title">${r.client||"Cliente"} · ${r.brand||""} ${r.model||""}</div><div class="muted">${r.category}${r.serial?" · "+r.serial:""}</div><div class="datetime">📅 ${fmtDate(r.date)}${r.time?" · 🕒 "+r.time:""}</div><div class="paypill">💳 ${r.payment||"No indicado"}</div></div><span class="badge">${status(r.status)}</span></div><div class="meta"><div><b>Problema</b><span>${r.issue||"—"}</span></div><div><b>Estimado</b><span>${money(r.estimate)}</span></div><div><b>Balance</b><span>${money(Number(r.estimate||0)-Number(r.deposit||0))}</span></div></div><div class="actions"><button onclick="openRepair('${r.id}')">Editar</button>${r.phone?`<button class="msg" onclick="messageRepair(d.repairs.find(x=>x.id==='${r.id}'))">💬 Enviar mensaje</button>`:""}<button class="danger" onclick="delRepair('${r.id}')">Eliminar</button></div></div>`).join("")||"<div class='muted'>No hay reparaciones.</div>"}
-function renderTrades(q=""){q=q.toLowerCase();let a=d.trades.filter(t=>(t.client+" "+t.phone+" "+t.brand+" "+t.model+" "+t.condition+" "+t.serial).toLowerCase().includes(q)).sort((a,b)=>b.updatedAt-a.updatedAt);$("tradeList").innerHTML=a.map(t=>`<div class="card"><div class="cardtop"><div><div class="title">${t.brand||""} ${t.model||""}</div><div class="muted">${t.client||"Cliente"} · ${t.condition}</div><div class="datetime">📅 ${fmtDate(t.date)}${t.time?" · 🕒 "+t.time:""}</div><div class="paypill">💳 ${t.payment||"No indicado"}</div></div><span class="badge">${t.status}</span></div><div class="meta"><div><b>Oferta</b><span>${money(t.offer)}</span></div><div><b>Reventa</b><span>${money(t.resale)}</span></div><div><b>Margen</b><span>${money(Number(t.resale||0)-Number(t.offer||0))}</span></div></div><div class="actions"><button onclick="openTrade('${t.id}')">Editar</button>${t.phone?`<button class="msg" onclick="messageTrade(d.trades.find(x=>x.id==='${t.id}'))">💬 Enviar mensaje</button>`:""}<button class="danger" onclick="delTrade('${t.id}')">Eliminar</button></div></div>`).join("")||"<div class='muted'>No hay Trade-In.</div>"}
-
-function renderItems(q=""){
-q=(q||"").toLowerCase().trim();
-
-const brandOrder=["Apple","Samsung","Nintendo","PlayStation","Xbox","Otro"];
-const conditionOrder=["Nuevo","Usado","Refurbished","Para piezas"];
-
-let a=(d.items||[]).filter(i=>{
-  const searchText=(i.brand+" "+i.type+" "+i.model+" "+i.serial+" "+i.condition+" "+(i.notes||"")).toLowerCase();
-  const matchesSearch=searchText.includes(q);
-  const matchesBrand=itemBrandFilter==="Todas" || i.brand===itemBrandFilter;
-  const matchesCondition=itemConditionFilter==="Todas" || i.condition===itemConditionFilter;
-  return matchesSearch && matchesBrand && matchesCondition;
-}).sort((a,b)=>b.updatedAt-a.updatedAt);
-
-if(!a.length){
-  $("itemList").innerHTML="<div class='muted' style='padding:24px 4px'>No hay artículos con esos filtros.</div>";
-  return;
+async function fileToCompressedDataURL(file){
+  if(!file) return "";
+  const data = await new Promise((resolve,reject)=>{
+    const fr = new FileReader();
+    fr.onload = () => resolve(fr.result);
+    fr.onerror = reject;
+    fr.readAsDataURL(file);
+  });
+  const img = await new Promise((resolve,reject)=>{
+    const im = new Image();
+    im.onload = ()=>resolve(im);
+    im.onerror = reject;
+    im.src = data;
+  });
+  const max = 900;
+  const scale = Math.min(1, max/Math.max(img.width, img.height));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round(img.width*scale));
+  canvas.height = Math.max(1, Math.round(img.height*scale));
+  canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
+  return canvas.toDataURL("image/jpeg", .80);
+}
+function dataURLToFile(dataurl, filename){
+  const arr = dataurl.split(',');
+  const mime = (arr[0].match(/:(.*?);/)||[])[1] || "image/jpeg";
+  const bstr = atob(arr[1]); let n = bstr.length;
+  const u8 = new Uint8Array(n);
+  while(n--) u8[n] = bstr.charCodeAt(n);
+  return new File([u8], filename, {type:mime});
+}
+function showPreview(boxId, imgId, dataUrl){
+  const box=$(boxId), img=$(imgId);
+  if(dataUrl){
+    img.src=dataUrl; box.style.display="block";
+  } else {
+    img.removeAttribute("src"); box.style.display="none";
+  }
+}
+async function sharePhoto(dataUrl, title="Foto"){
+  if(!dataUrl){ alert("No hay foto guardada."); return; }
+  try{
+    const file = dataURLToFile(dataUrl, "foto.jpg");
+    if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({title, files:[file]});
+    }else{
+      alert("Tu navegador no permite enviar la foto automáticamente. Puedes abrirla y compartirla manualmente.");
+    }
+  }catch(e){}
+}
+function openWhatsApp(phone, message){
+  const p = cleanPhone(phone);
+  const url = p ? `https://wa.me/${p}?text=${encodeURIComponent(message)}` : `https://wa.me/?text=${encodeURIComponent(message)}`;
+  window.open(url, "_blank");
+}
+function openSMS(phone, message){
+  const p = cleanPhone(phone);
+  const url = `sms:${p}?&body=${encodeURIComponent(message)}`;
+  window.location.href = url;
+}
+function repairMessage(r){
+  const prog = progressInfo(r.status);
+  return `${data.settings.businessName || "Repair Hub Pro"}
+Reparación: ${r.brand || ""} ${r.model || ""}
+Fecha: ${fmtDate(r.date)} ${r.time || ""}
+Estado: ${repairStatusLabel(r.status)} (${prog.p}%)
+Estimado: ${money(r.estimate)}
+Depósito: ${money(r.deposit)}
+Balance: ${money(Number(r.estimate||0)-Number(r.deposit||0))}
+Pago: ${r.payment || "No indicado"}
+${data.settings.footerNote || ""}`.trim();
+}
+function tradeMessage(t){
+  return `${data.settings.businessName || "Repair Hub Pro"}
+Trade-In: ${t.brand || ""} ${t.model || ""}
+Fecha: ${fmtDate(t.date)} ${t.time || ""}
+Condición: ${t.condition || ""}
+Oferta: ${money(t.offer)}
+Reventa estimada: ${money(t.resale)}
+Estado: ${tradeStatusLabel(t.status)}
+Pago: ${t.payment || "No indicado"}
+${data.settings.footerNote || ""}`.trim();
+}
+function itemMessage(i){
+  return `${data.settings.businessName || "Repair Hub Pro"}
+Artículo: ${i.brand || ""} ${i.model || i.type || ""}
+Condición: ${i.condition || ""}
+Precio: ${money(i.sale)}
+Stock: ${i.qty || 0}
+Pago: ${i.payment || "No indicado"}
+${data.settings.footerNote || ""}`.trim();
 }
 
-const grouped={};
-a.forEach(i=>{
-  const brand=brandOrder.includes(i.brand)?i.brand:"Otro";
-  const condition=conditionOrder.includes(i.condition)?i.condition:"Usado";
-  grouped[brand] ||= {};
-  grouped[brand][condition] ||= [];
-  grouped[brand][condition].push(i);
-});
+function renderDashboard(){
+  $("statRepairs").textContent = data.repairs.filter(r=>r.status!=="delivered").length;
+  $("statReady").textContent = data.repairs.filter(r=>r.status==="ready").length;
+  $("statTrades").textContent = data.trades.filter(t=>t.status==="pending").length;
+  $("statItems").textContent = data.items.reduce((sum,i)=>sum+Number(i.qty||0),0);
 
-$("itemList").innerHTML=brandOrder
-  .filter(brand=>grouped[brand])
-  .map(brand=>{
-    const conditionBlocks=conditionOrder
-      .filter(condition=>grouped[brand][condition]?.length)
-      .map(condition=>{
-        const items=grouped[brand][condition];
-        const cards=items.map(i=>`<div class="card">
-          <div class="cardtop">
+  const recent = [
+    ...data.repairs.map(r=>({type:"Reparación", name:`${r.brand||""} ${r.model||""}`.trim() || "Reparación", at:r.updatedAt||0})),
+    ...data.trades.map(t=>({type:"Trade-In", name:`${t.brand||""} ${t.model||""}`.trim() || "Trade-In", at:t.updatedAt||0})),
+    ...data.items.map(i=>({type:"Artículo", name:`${i.brand||""} ${i.model||i.type||""}`.trim() || "Artículo", at:i.updatedAt||0}))
+  ].sort((a,b)=>b.at-a.at).slice(0,8);
+
+  $("recentList").innerHTML = recent.length ? recent.map(x=>`<div class="recentItem"><b>${x.type}</b> · ${x.name}</div>`).join("") : `<div class="empty">Sin actividad todavía.</div>`;
+}
+
+function renderRepairs(query=""){
+  query = query.toLowerCase().trim();
+  const arr = [...data.repairs].filter(r => (`${r.client} ${r.phone} ${r.category} ${r.brand} ${r.model} ${r.serial} ${r.issue}`).toLowerCase().includes(query))
+                              .sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+  $("repairList").innerHTML = arr.length ? "" : `<div class="empty">No hay reparaciones.</div>`;
+  arr.forEach(r=>{
+    const balance = Number(r.estimate||0) - Number(r.deposit||0);
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="cardTop">
+        <div>
+          <div class="title">${r.client || "Cliente"} · ${r.brand || ""} ${r.model || ""}</div>
+          <div class="sub">${r.category || ""}${r.serial ? " · " + r.serial : ""}</div>
+          <div class="datetime">📅 ${fmtDate(r.date)}${r.time ? " · 🕒 " + r.time : ""}</div>
+          <div class="payPill">💳 ${r.payment || "No indicado"}</div>
+          ${r.photo ? `<img class="thumb" src="${r.photo}" alt="Foto reparación">` : ""}
+        </div>
+        <span class="badge ${repairStatusClass(r.status)}">${repairStatusLabel(r.status)}</span>
+      </div>
+      ${progressHTML(r.status)}
+      <div class="meta">
+        <div class="box"><b>Problema</b><span>${r.issue || "—"}</span></div>
+        <div class="box"><b>Estimado</b><span>${money(r.estimate)}</span></div>
+        <div class="box"><b>Balance</b><span>${money(balance)}</span></div>
+      </div>
+      <div class="actions">
+        <button onclick="openRepair('${r.id}')">Editar</button>
+        ${r.phone ? `<button class="wa" onclick="openWhatsApp('${r.phone}', repairMessage(getRepair('${r.id}')))">🟢 WhatsApp</button>` : ""}
+        ${r.phone ? `<button class="sms" onclick="openSMS('${r.phone}', repairMessage(getRepair('${r.id}')))">💬 Mensaje</button>` : ""}
+        ${r.photo ? `<button class="share" onclick="sharePhoto(getRepair('${r.id}').photo,'Foto reparación')">📷 Enviar foto</button>` : ""}
+        <button class="danger" onclick="deleteRepair('${r.id}')">Eliminar</button>
+      </div>`;
+    $("repairList").appendChild(card);
+  });
+}
+
+function renderTrades(query=""){
+  query = query.toLowerCase().trim();
+  const arr = [...data.trades].filter(t => (`${t.client} ${t.phone} ${t.category} ${t.brand} ${t.model} ${t.serial} ${t.condition}`).toLowerCase().includes(query))
+                             .sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+  $("tradeList").innerHTML = arr.length ? "" : `<div class="empty">No hay Trade-In.</div>`;
+  arr.forEach(t=>{
+    const margin = Number(t.resale||0) - Number(t.offer||0);
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="cardTop">
+        <div>
+          <div class="title">${t.brand || ""} ${t.model || ""}</div>
+          <div class="sub">${t.client || "Cliente"}${t.condition ? " · " + t.condition : ""}</div>
+          <div class="datetime">📅 ${fmtDate(t.date)}${t.time ? " · 🕒 " + t.time : ""}</div>
+          <div class="payPill">💳 ${t.payment || "No indicado"}</div>
+          ${t.photo ? `<img class="thumb" src="${t.photo}" alt="Foto trade">` : ""}
+        </div>
+        <span class="badge ${tradeStatusClass(t.status)}">${tradeStatusLabel(t.status)}</span>
+      </div>
+      <div class="meta">
+        <div class="box"><b>Oferta</b><span>${money(t.offer)}</span></div>
+        <div class="box"><b>Reventa</b><span>${money(t.resale)}</span></div>
+        <div class="box"><b>Margen</b><span>${money(margin)}</span></div>
+      </div>
+      <div class="actions">
+        <button onclick="openTrade('${t.id}')">Editar</button>
+        ${t.phone ? `<button class="wa" onclick="openWhatsApp('${t.phone}', tradeMessage(getTrade('${t.id}')))">🟢 WhatsApp</button>` : ""}
+        ${t.phone ? `<button class="sms" onclick="openSMS('${t.phone}', tradeMessage(getTrade('${t.id}')))">💬 Mensaje</button>` : ""}
+        ${t.photo ? `<button class="share" onclick="sharePhoto(getTrade('${t.id}').photo,'Foto Trade-In')">📷 Enviar foto</button>` : ""}
+        <button class="danger" onclick="deleteTrade('${t.id}')">Eliminar</button>
+      </div>`;
+    $("tradeList").appendChild(card);
+  });
+}
+
+function renderItems(query=""){
+  query = query.toLowerCase().trim();
+  const brands = ["Apple","Samsung","Nintendo","PlayStation","Xbox","Otro"];
+  const conditions = ["Nuevo","Usado","Refurbished","Para piezas"];
+
+  const filtered = [...data.items].filter(i=>{
+    const hay = (`${i.brand} ${i.type} ${i.model} ${i.serial} ${i.condition} ${i.notes} ${i.phone}`).toLowerCase();
+    const searchOk = hay.includes(query);
+    const brandOk = itemBrandFilter==="Todas" || i.brand===itemBrandFilter;
+    const condOk = itemConditionFilter==="Todas" || i.condition===itemConditionFilter;
+    return searchOk && brandOk && condOk;
+  }).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+
+  if(!filtered.length){
+    $("itemList").innerHTML = `<div class="empty">No hay artículos con esos filtros.</div>`;
+    return;
+  }
+
+  const grouped = {};
+  filtered.forEach(i=>{
+    const b = brands.includes(i.brand) ? i.brand : "Otro";
+    const c = conditions.includes(i.condition) ? i.condition : "Usado";
+    grouped[b] ||= {};
+    grouped[b][c] ||= [];
+    grouped[b][c].push(i);
+  });
+
+  $("itemList").innerHTML = "";
+  brands.filter(b=>grouped[b]).forEach(brand=>{
+    const section = document.createElement("div");
+    section.className = "brandSection";
+    const total = Object.values(grouped[brand]).reduce((sum, arr)=>sum+arr.length, 0);
+    section.innerHTML = `<div class="brandHeader"><h3>${brand}</h3><span class="brandCount">${total} artículo${total===1?"":"s"}</span></div>`;
+    conditions.filter(c=>grouped[brand][c]?.length).forEach(condition=>{
+      const wrap = document.createElement("div");
+      wrap.className = "conditionSection";
+      wrap.innerHTML = `<div class="condHead"><strong>${condition==="Nuevo"?"🆕 Nuevos":condition==="Usado"?"♻️ Usados":condition}</strong><span>${grouped[brand][condition].length}</span></div>`;
+      grouped[brand][condition].forEach(i=>{
+        const margin = Number(i.sale||0) - Number(i.cost||0);
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="cardTop">
             <div>
-              <div class="title">${i.model||i.type}</div>
-              <div class="muted">${i.type}${i.serial?" · "+i.serial:""}</div>
+              <div class="title">${i.model || i.type}</div>
+              <div class="sub">${i.type}${i.serial ? " · " + i.serial : ""}</div>
               <div class="datetime">📅 ${fmtDate(i.date)}</div>
-              <div class="paypill">💳 ${i.payment||"No indicado"}</div>
+              <div class="payPill">💳 ${i.payment || "No indicado"}</div>
+              ${i.photo ? `<img class="thumb" src="${i.photo}" alt="Foto artículo">` : ""}
             </div>
-            <span class="badge">Stock: ${i.qty}</span>
+            <span class="badge">${i.qty || 0} en stock</span>
           </div>
           <div class="meta">
-            <div><b>Costo</b><span>${money(i.cost)}</span></div>
-            <div><b>Venta</b><span>${money(i.sale)}</span></div>
-            <div><b>Margen/unidad</b><span>${money(Number(i.sale||0)-Number(i.cost||0))}</span></div>
+            <div class="box"><b>Costo</b><span>${money(i.cost)}</span></div>
+            <div class="box"><b>Venta</b><span>${money(i.sale)}</span></div>
+            <div class="box"><b>Margen</b><span>${money(margin)}</span></div>
           </div>
           <div class="actions">
             <button onclick="openItem('${i.id}')">Editar</button>
-            <button class="danger" onclick="delItem('${i.id}')">Eliminar</button>
-          </div>
-        </div>`).join("");
-
-        return `<div class="conditionSection">
-          <div class="conditionHeader">
-            <strong>${condition==="Nuevo"?"🆕 Nuevos":condition==="Usado"?"♻️ Usados":condition}</strong>
-            <span>${items.length} artículo${items.length===1?"":"s"}</span>
-          </div>
-          ${cards}
-        </div>`;
-      }).join("");
-
-    const total=Object.values(grouped[brand]).reduce((sum,list)=>sum+list.length,0);
-    return `<div class="brandSection">
-      <div class="brandHeader"><h3>${brand}</h3><span class="brandCount">${total} artículo${total===1?"":"s"}</span></div>
-      ${conditionBlocks}
-    </div>`;
-  }).join("");
+            ${i.phone ? `<button class="wa" onclick="openWhatsApp('${i.phone}', itemMessage(getItem('${i.id}')))">🟢 WhatsApp</button>` : ""}
+            ${i.phone ? `<button class="sms" onclick="openSMS('${i.phone}', itemMessage(getItem('${i.id}')))">💬 Mensaje</button>` : ""}
+            ${i.photo ? `<button class="share" onclick="sharePhoto(getItem('${i.id}').photo,'Foto artículo')">📷 Enviar foto</button>` : ""}
+            <button class="danger" onclick="deleteItem('${i.id}')">Eliminar</button>
+          </div>`;
+        wrap.appendChild(card);
+      });
+      section.appendChild(wrap);
+    });
+    $("itemList").appendChild(section);
+  });
 }
-window.openItem=id=>{
-ei=id||null;let i=id?(d.items||[]).find(x=>x.id===id):{};
-$("itemTitle").textContent=id?"Editar artículo":"Nuevo artículo";
-$("iBrand").value=i.brand||"Apple";$("iType").value=i.type||"Teléfono";$("iModel").value=i.model||"";
-$("iCost").value=i.cost||"";$("iSale").value=i.sale||"";$("iQty").value=i.qty??1;
-$("iCondition").value=i.condition||"Nuevo";$("iDate").value=i.date||todayISO();$("iPayment").value=i.payment||"ATH Móvil";$("iSerial").value=i.serial||"";$("iNotes").value=i.notes||"";
-$("itemDelete").style.display=id?"inline-block":"none";$("itemDlg").showModal()
-}
-$("itemForm").onsubmit=e=>{
-e.preventDefault();let i=ei?(d.items||[]).find(x=>x.id===ei):{id:uid()};
-Object.assign(i,{brand:$("iBrand").value,type:$("iType").value,model:$("iModel").value.trim(),cost:Number($("iCost").value||0),sale:Number($("iSale").value||0),qty:Number($("iQty").value||0),condition:$("iCondition").value,date:$("iDate").value,payment:$("iPayment").value,serial:$("iSerial").value.trim(),notes:$("iNotes").value.trim(),updatedAt:Date.now()});
-if(!ei){d.items=d.items||[];d.items.push(i)}save();$("itemDlg").close();all()
-}
-window.delItem=id=>{if(confirm("¿Eliminar este artículo?")){d.items=(d.items||[]).filter(x=>x.id!==id);save();all()}}
-$("itemDelete").onclick=()=>{if(ei){delItem(ei);$("itemDlg").close()}};$("itemCancel").onclick=()=>$("itemDlg").close();
 
-function renderDash(){$("openCount").textContent=d.repairs.filter(r=>r.status!=="delivered").length;$("readyCount").textContent=d.repairs.filter(r=>r.status==="ready").length;$("tradeCount").textContent=d.trades.filter(t=>t.status==="pending").length;$("tradeValue").textContent=money(d.trades.filter(t=>t.status==="accepted").reduce((s,t)=>s+Number(t.offer||0),0));let a=[...d.repairs.map(x=>({n:x.brand+" "+x.model,t:x.updatedAt})),...d.trades.map(x=>({n:"Trade-In "+x.brand+" "+x.model,t:x.updatedAt}))].sort((a,b)=>b.t-a.t).slice(0,5);$("recent").innerHTML=a.map(x=>`<div class="muted" style="padding:7px 0">${x.n}</div>`).join("")||"<div class='muted'>Sin actividad.</div>"}
-function all(){apply();renderRepairs($("repairSearch").value||"");renderTrades($("tradeSearch").value||"");renderItems($("itemSearch")?.value||"");renderDash()}
-window.openRepair=id=>{er=id||null;let r=id?d.repairs.find(x=>x.id===id):{};$("repairTitle").textContent=id?"Editar reparación":"Nueva reparación";$("rClient").value=r.client||"";$("rPhone").value=r.phone||"";$("rCategory").value=r.category||"Teléfono";$("rBrand").value=r.brand||"";$("rModel").value=r.model||"";$("rDate").value=r.date||todayISO();$("rTime").value=r.time||nowTime();$("rSerial").value=r.serial||"";$("rAccessories").value=r.accessories||"";$("rIssue").value=r.issue||"";$("rEstimate").value=r.estimate||"";$("rDeposit").value=r.deposit||"";$("rStatus").value=r.status||"received";$("rPayment").value=r.payment||"ATH Móvil";$("rNotes").value=r.notes||"";$("repairDelete").style.display=id?"inline-block":"none";$("repairDlg").showModal()}
-$("repairForm").onsubmit=e=>{e.preventDefault();let r=er?d.repairs.find(x=>x.id===er):{id:uid()};Object.assign(r,{client:$("rClient").value,phone:$("rPhone").value,category:$("rCategory").value,brand:$("rBrand").value,model:$("rModel").value,date:$("rDate").value,time:$("rTime").value,serial:$("rSerial").value,accessories:$("rAccessories").value,issue:$("rIssue").value,estimate:Number($("rEstimate").value||0),deposit:Number($("rDeposit").value||0),status:$("rStatus").value,payment:$("rPayment").value,notes:$("rNotes").value,updatedAt:Date.now()});if(!er)d.repairs.push(r);save();$("repairDlg").close();all()}
-window.delRepair=id=>{if(confirm("¿Eliminar esta reparación?")){d.repairs=d.repairs.filter(x=>x.id!==id);save();all()}};$("repairDelete").onclick=()=>{if(er){delRepair(er);$("repairDlg").close()}};$("repairCancel").onclick=()=>$("repairDlg").close();
-window.openTrade=id=>{et=id||null;let t=id?d.trades.find(x=>x.id===id):{};$("tradeTitle").textContent=id?"Editar Trade-In":"Nuevo Trade-In";$("tClient").value=t.client||"";$("tPhone").value=t.phone||"";$("tCategory").value=t.category||"Teléfono";$("tBrand").value=t.brand||"";$("tModel").value=t.model||"";$("tDate").value=t.date||todayISO();$("tTime").value=t.time||nowTime();$("tVariant").value=t.variant||"";$("tSerial").value=t.serial||"";$("tCondition").value=t.condition||"Buena";$("tOffer").value=t.offer||"";$("tResale").value=t.resale||"";$("tStatus").value=t.status||"pending";$("tPayment").value=t.payment||"ATH Móvil";$("tNotes").value=t.notes||"";$("tradeDelete").style.display=id?"inline-block":"none";$("tradeDlg").showModal()}
-$("tradeForm").onsubmit=e=>{e.preventDefault();let t=et?d.trades.find(x=>x.id===et):{id:uid()};Object.assign(t,{client:$("tClient").value,phone:$("tPhone").value,category:$("tCategory").value,brand:$("tBrand").value,model:$("tModel").value,date:$("tDate").value,time:$("tTime").value,variant:$("tVariant").value,serial:$("tSerial").value,condition:$("tCondition").value,offer:Number($("tOffer").value||0),resale:Number($("tResale").value||0),status:$("tStatus").value,payment:$("tPayment").value,notes:$("tNotes").value,updatedAt:Date.now()});if(!et)d.trades.push(t);save();$("tradeDlg").close();all()}
-window.delTrade=id=>{if(confirm("¿Eliminar este Trade-In?")){d.trades=d.trades.filter(x=>x.id!==id);save();all()}};$("tradeDelete").onclick=()=>{if(et){delTrade(et);$("tradeDlg").close()}};$("tradeCancel").onclick=()=>$("tradeDlg").close();
-document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));$(b.dataset.v).classList.add("active");document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("active",x===b));all()});
-$("newRepair").onclick=()=>openRepair();$("newTrade").onclick=()=>openTrade();$("newItem").onclick=()=>openItem();
-document.querySelectorAll("#brandFilters [data-brand]").forEach(btn=>btn.onclick=()=>{
-  itemBrandFilter=btn.dataset.brand;
-  document.querySelectorAll("#brandFilters [data-brand]").forEach(x=>x.classList.toggle("active",x===btn));
-  renderItems($("itemSearch").value||"");
+function renderAll(){
+  applyTheme();
+  renderDashboard();
+  renderRepairs($("repairSearch").value || "");
+  renderTrades($("tradeSearch").value || "");
+  renderItems($("itemSearch").value || "");
+}
+function getRepair(id){ return data.repairs.find(x=>x.id===id); }
+function getTrade(id){ return data.trades.find(x=>x.id===id); }
+function getItem(id){ return data.items.find(x=>x.id===id); }
+
+window.openRepair = function(id=null){
+  editingRepair = id;
+  const r = id ? getRepair(id) : {};
+  $("repairTitle").textContent = id ? "Editar reparación" : "Nueva reparación";
+  $("rDate").value = r?.date || todayISO();
+  $("rTime").value = r?.time || nowHM();
+  $("rClient").value = r?.client || "";
+  $("rPhone").value = r?.phone || "";
+  $("rCategory").value = r?.category || "Teléfono";
+  $("rBrand").value = r?.brand || "Apple";
+  $("rModel").value = r?.model || "";
+  $("rSerial").value = r?.serial || "";
+  $("rAccessories").value = r?.accessories || "";
+  $("rIssue").value = r?.issue || "";
+  $("rEstimate").value = r?.estimate ?? "";
+  $("rDeposit").value = r?.deposit ?? "";
+  $("rStatus").value = r?.status || "received";
+  $("rPayment").value = r?.payment || "ATH Móvil";
+  $("rNotes").value = r?.notes || "";
+  showPreview("rPhotoPreview","rPhotoImg", r?.photo || "");
+  $("rPhoto").value = "";
+  $("repairDeleteBtn").style.display = id ? "inline-block" : "none";
+  $("repairDialog").showModal();
+}
+window.openTrade = function(id=null){
+  editingTrade = id;
+  const t = id ? getTrade(id) : {};
+  $("tradeTitle").textContent = id ? "Editar Trade-In" : "Nuevo Trade-In";
+  $("tDate").value = t?.date || todayISO();
+  $("tTime").value = t?.time || nowHM();
+  $("tClient").value = t?.client || "";
+  $("tPhone").value = t?.phone || "";
+  $("tCategory").value = t?.category || "Teléfono";
+  $("tBrand").value = t?.brand || "Apple";
+  $("tModel").value = t?.model || "";
+  $("tVariant").value = t?.variant || "";
+  $("tSerial").value = t?.serial || "";
+  $("tCondition").value = t?.condition || "Buena";
+  $("tPayment").value = t?.payment || "ATH Móvil";
+  $("tOffer").value = t?.offer ?? "";
+  $("tResale").value = t?.resale ?? "";
+  $("tStatus").value = t?.status || "pending";
+  $("tNotes").value = t?.notes || "";
+  showPreview("tPhotoPreview","tPhotoImg", t?.photo || "");
+  $("tPhoto").value = "";
+  $("tradeDeleteBtn").style.display = id ? "inline-block" : "none";
+  $("tradeDialog").showModal();
+}
+window.openItem = function(id=null){
+  editingItem = id;
+  const i = id ? getItem(id) : {};
+  $("itemTitle").textContent = id ? "Editar artículo" : "Nuevo artículo";
+  $("iDate").value = i?.date || todayISO();
+  $("iBrand").value = i?.brand || "Apple";
+  $("iType").value = i?.type || "Teléfono";
+  $("iModel").value = i?.model || "";
+  $("iCost").value = i?.cost ?? "";
+  $("iSale").value = i?.sale ?? "";
+  $("iQty").value = i?.qty ?? 1;
+  $("iCondition").value = i?.condition || "Nuevo";
+  $("iPayment").value = i?.payment || "ATH Móvil";
+  $("iPhone").value = i?.phone || "";
+  $("iSerial").value = i?.serial || "";
+  $("iNotes").value = i?.notes || "";
+  showPreview("iPhotoPreview","iPhotoImg", i?.photo || "");
+  $("iPhoto").value = "";
+  $("itemDeleteBtn").style.display = id ? "inline-block" : "none";
+  $("itemDialog").showModal();
+}
+
+$("repairForm").onsubmit = async (e)=>{
+  e.preventDefault();
+  let r = editingRepair ? getRepair(editingRepair) : {id:uid(), createdAt:Date.now()};
+  let photo = r.photo || "";
+  if($("rPhoto").files[0]) photo = await fileToCompressedDataURL($("rPhoto").files[0]);
+  Object.assign(r, {
+    date:$("rDate").value,
+    time:$("rTime").value,
+    client:$("rClient").value.trim(),
+    phone:$("rPhone").value.trim(),
+    category:$("rCategory").value,
+    brand:$("rBrand").value,
+    model:$("rModel").value.trim(),
+    serial:$("rSerial").value.trim(),
+    accessories:$("rAccessories").value.trim(),
+    issue:$("rIssue").value.trim(),
+    estimate:Number($("rEstimate").value || 0),
+    deposit:Number($("rDeposit").value || 0),
+    status:$("rStatus").value,
+    payment:$("rPayment").value,
+    photo,
+    notes:$("rNotes").value.trim(),
+    updatedAt:Date.now()
+  });
+  if(!editingRepair) data.repairs.push(r);
+  save(); $("repairDialog").close(); renderAll();
+};
+$("tradeForm").onsubmit = async (e)=>{
+  e.preventDefault();
+  let t = editingTrade ? getTrade(editingTrade) : {id:uid(), createdAt:Date.now()};
+  let photo = t.photo || "";
+  if($("tPhoto").files[0]) photo = await fileToCompressedDataURL($("tPhoto").files[0]);
+  Object.assign(t, {
+    date:$("tDate").value,
+    time:$("tTime").value,
+    client:$("tClient").value.trim(),
+    phone:$("tPhone").value.trim(),
+    category:$("tCategory").value,
+    brand:$("tBrand").value,
+    model:$("tModel").value.trim(),
+    variant:$("tVariant").value.trim(),
+    serial:$("tSerial").value.trim(),
+    condition:$("tCondition").value,
+    payment:$("tPayment").value,
+    offer:Number($("tOffer").value || 0),
+    resale:Number($("tResale").value || 0),
+    status:$("tStatus").value,
+    photo,
+    notes:$("tNotes").value.trim(),
+    updatedAt:Date.now()
+  });
+  if(!editingTrade) data.trades.push(t);
+  save(); $("tradeDialog").close(); renderAll();
+};
+$("itemForm").onsubmit = async (e)=>{
+  e.preventDefault();
+  let i = editingItem ? getItem(editingItem) : {id:uid(), createdAt:Date.now()};
+  let photo = i.photo || "";
+  if($("iPhoto").files[0]) photo = await fileToCompressedDataURL($("iPhoto").files[0]);
+  Object.assign(i, {
+    date:$("iDate").value,
+    brand:$("iBrand").value,
+    type:$("iType").value,
+    model:$("iModel").value.trim(),
+    cost:Number($("iCost").value || 0),
+    sale:Number($("iSale").value || 0),
+    qty:Number($("iQty").value || 0),
+    condition:$("iCondition").value,
+    payment:$("iPayment").value,
+    phone:$("iPhone").value.trim(),
+    serial:$("iSerial").value.trim(),
+    photo,
+    notes:$("iNotes").value.trim(),
+    updatedAt:Date.now()
+  });
+  if(!editingItem) data.items.push(i);
+  save(); $("itemDialog").close(); renderAll();
+};
+
+window.deleteRepair = function(id){
+  if(confirm("¿Eliminar esta reparación?")){
+    data.repairs = data.repairs.filter(x=>x.id!==id);
+    save(); renderAll();
+  }
+}
+window.deleteTrade = function(id){
+  if(confirm("¿Eliminar este Trade-In?")){
+    data.trades = data.trades.filter(x=>x.id!==id);
+    save(); renderAll();
+  }
+}
+window.deleteItem = function(id){
+  if(confirm("¿Eliminar este artículo?")){
+    data.items = data.items.filter(x=>x.id!==id);
+    save(); renderAll();
+  }
+}
+
+$("repairDeleteBtn").onclick = ()=>{ if(editingRepair) { deleteRepair(editingRepair); $("repairDialog").close(); } };
+$("tradeDeleteBtn").onclick = ()=>{ if(editingTrade) { deleteTrade(editingTrade); $("tradeDialog").close(); } };
+$("itemDeleteBtn").onclick = ()=>{ if(editingItem) { deleteItem(editingItem); $("itemDialog").close(); } };
+$("repairCancelBtn").onclick = ()=>$("repairDialog").close();
+$("tradeCancelBtn").onclick = ()=>$("tradeDialog").close();
+$("itemCancelBtn").onclick = ()=>$("itemDialog").close();
+
+$("newRepairBtn").onclick = ()=>openRepair();
+$("newTradeBtn").onclick = ()=>openTrade();
+$("newItemBtn").onclick = ()=>openItem();
+
+$("repairSearch").oninput = e => renderRepairs(e.target.value);
+$("tradeSearch").oninput = e => renderTrades(e.target.value);
+$("itemSearch").oninput = e => renderItems(e.target.value);
+
+document.querySelectorAll("#brandFilters button").forEach(btn=>{
+  btn.onclick = ()=>{
+    itemBrandFilter = btn.dataset.brand;
+    document.querySelectorAll("#brandFilters button").forEach(x=>x.classList.toggle("active", x===btn));
+    renderItems($("itemSearch").value || "");
+  };
 });
-document.querySelectorAll("#conditionFilters [data-condition]").forEach(btn=>btn.onclick=()=>{
-  itemConditionFilter=btn.dataset.condition;
-  document.querySelectorAll("#conditionFilters [data-condition]").forEach(x=>x.classList.toggle("active",x===btn));
-  renderItems($("itemSearch").value||"");
-});$("repairSearch").oninput=e=>renderRepairs(e.target.value);$("tradeSearch").oninput=e=>renderTrades(e.target.value);$("itemSearch").oninput=e=>renderItems(e.target.value);$("themeBtn").onclick=()=>{d.settings.theme=d.settings.theme==="dark"?"light":"dark";save();all()};$("saveSettings").onclick=()=>{d.settings.businessName=$("businessName").value||"Repair Hub";d.settings.businessPhone=$("businessPhone").value;d.settings.theme=$("themeSelect").value;save();all()};all();
-</script></body></html>
+document.querySelectorAll("#conditionFilters button").forEach(btn=>{
+  btn.onclick = ()=>{
+    itemConditionFilter = btn.dataset.condition;
+    document.querySelectorAll("#conditionFilters button").forEach(x=>x.classList.toggle("active", x===btn));
+    renderItems($("itemSearch").value || "");
+  };
+});
+
+$("themeBtn").onclick = ()=>{
+  data.settings.theme = data.settings.theme === "dark" ? "light" : "dark";
+  save(); renderAll();
+};
+$("saveSettingsBtn").onclick = ()=>{
+  data.settings.businessName = $("businessNameInput").value.trim() || "Repair Hub Pro";
+  data.settings.businessPhone = $("businessPhoneInput").value.trim();
+  data.settings.theme = $("themeSelect").value;
+  data.settings.footerNote = $("footerNoteInput").value.trim();
+  save(); renderAll(); alert("Ajustes guardados");
+};
+
+$("rPhoto").onchange = async ()=>{ const f=$("rPhoto").files[0]; if(f) showPreview("rPhotoPreview","rPhotoImg", await fileToCompressedDataURL(f)); };
+$("tPhoto").onchange = async ()=>{ const f=$("tPhoto").files[0]; if(f) showPreview("tPhotoPreview","tPhotoImg", await fileToCompressedDataURL(f)); };
+$("iPhoto").onchange = async ()=>{ const f=$("iPhoto").files[0]; if(f) showPreview("iPhotoPreview","iPhotoImg", await fileToCompressedDataURL(f)); };
+
+renderAll();
+</script>
+</body>
+</html>

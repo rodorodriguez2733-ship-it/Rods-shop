@@ -1,8 +1,8 @@
 {
-  "name": "Repair Hub",
-  "short_name": "Repair Hub",
+  "name": "Repair Hub Pro",
+  "short_name": "Repair Hub Pro",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff"
+  "background_color": "#101114",
+  "theme_color": "#101114"
 }
