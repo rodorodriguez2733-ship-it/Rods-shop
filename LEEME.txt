@@ -1,19 +1,16 @@
-Repair Hub Pro V11
+Repair Hub Pro V12
 
-CORREGIDO:
-- Los iconos y botones vuelven a funcionar.
-- Inicio funciona.
-- WhatsApp funciona.
-- Mensaje funciona.
-- Editar funciona.
-- Enviar estado funciona.
-- Foto funciona.
-- Eliminar funciona.
-- Los cuadros siguen siendo tocables para entrar a la opción.
-- Tocar un botón dentro del cuadro ya no activa el cuadro por error.
+Esta versión se reconstruyó desde la V9 para corregir los controles.
 
-Para confirmar que cargó:
-V11 · ICONOS Y BOTONES FUNCIONANDO
+- Botones y pestañas funcionan normalmente.
+- Botón Inicio.
+- Los cuadros del resumen son tocables.
+- Las tarjetas de reparación, Trade-In, artículos, clientes y transacciones son tocables.
+- Tocar un botón dentro de una tarjeta NO bloquea el botón.
+- Mantiene todos los tipos de equipo añadidos.
+
+Debe decir arriba:
+V12 · CONTROLES CORREGIDOS
 
 Reemplaza en GitHub:
 1. index.html

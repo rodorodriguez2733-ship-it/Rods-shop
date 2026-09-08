@@ -134,13 +134,9 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
 
 
 .homeBtn{background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;border:0}
-.clickable{cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-.clickable:active{transform:scale(.985)}
-.clickable:hover{transform:translateY(-2px);border-color:rgba(96,165,250,.35)}
-.touchHint{font-size:10px;color:var(--muted);font-weight:800;margin-top:7px}
-@media(max-width:720px){
-  .homeBtn{padding:10px 12px}
-}
+.clickableCard{cursor:pointer;transition:transform .16s ease,border-color .16s ease}
+.clickableCard:active{transform:scale(.985)}
+.touchHint{font-size:10px;color:var(--muted);font-weight:800;margin-top:6px}
 
 </style>
 </head>
@@ -153,7 +149,7 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
       <h1 id="brandName">Repair Hub Pro</h1>
       <p>TELÉFONOS · CONSOLAS · TRADE-IN · INVENTARIO</p><div style="font-size:10px;font-weight:900;color:var(--green);margin-top:5px">V5 · MENÚ FIJO Y DEBAJO</div>
     </div>
-    <div style="display:flex;gap:8px;align-items:center"><button class="pillBtn homeBtn" id="homeBtn">⌂ Inicio</button><button class="pillBtn" id="themeBtn">🌙/☀️</button></div>
+    <div style="display:flex;gap:8px;align-items:center"><button class="pillBtn homeBtn" type="button" onclick="switchView('dashboard')">⌂ Inicio</button><button class="pillBtn" id="themeBtn">🌙/☀️</button></div>
   </div>
   <div class="quickTopButtons" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
       <button class="primaryBtn" type="button" onclick="switchView('clients')">👥 CLIENTES</button>
@@ -171,21 +167,21 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
 <main>
   <section id="dashboard" class="view active">
     <div class="grid4">
-      <div class="stat clickable" onclick="switchView('repairs')"><div class="num" id="statRepairs">0</div><div class="lbl">Reparaciones abiertas</div><div class="touchHint">Toca para abrir</div></div>
-      <div class="stat clickable" onclick="switchView('repairs')"><div class="num" id="statReady">0</div><div class="lbl">Listas para entregar</div><div class="touchHint">Toca para abrir</div></div>
-      <div class="stat clickable" onclick="switchView('clients')"><div class="num" id="statClients">0</div><div class="lbl">Clientes</div><div class="touchHint">Toca para abrir</div></div>
-      <div class="stat clickable" onclick="switchView('transactions')"><div class="num" id="statToday">$0.00</div><div class="lbl">Transacciones del día</div><div class="touchHint">Toca para abrir</div></div>
+      <div class="stat clickableCard" onclick="switchView('repairs')"><div class="num" id="statRepairs">0</div><div class="lbl">Reparaciones abiertas</div><div class="touchHint">Toca para abrir</div></div>
+      <div class="stat clickableCard" onclick="switchView('repairs')"><div class="num" id="statReady">0</div><div class="lbl">Listas para entregar</div><div class="touchHint">Toca para abrir</div></div>
+      <div class="stat clickableCard" onclick="switchView('clients')"><div class="num" id="statClients">0</div><div class="lbl">Clientes</div><div class="touchHint">Toca para abrir</div></div>
+      <div class="stat clickableCard" onclick="switchView('transactions')"><div class="num" id="statToday">$0.00</div><div class="lbl">Transacciones del día</div><div class="touchHint">Toca para abrir</div></div>
     </div>
     <div class="grid3">
       <div class="panel">
         <h3 style="margin:0 0 8px">Actividad reciente</h3>
         <div id="recentList"></div>
       </div>
-      <div class="panel clickable" onclick="switchView('clients')">
+      <div class="panel">
         <h3 style="margin:0 0 8px">Clientes recientes</h3>
         <div id="recentClients"></div>
       </div>
-      <div class="panel clickable" onclick="switchView('transactions')">
+      <div class="panel">
         <h3 style="margin:0 0 8px">Hoy</h3>
         <div id="todaySummary"></div>
       </div>
@@ -764,8 +760,8 @@ function renderRepairs(query=""){
   arr.forEach(r=>{
     const balance = Number(r.estimate||0) - Number(r.deposit||0);
     const card = document.createElement("div");
-    card.className = "card clickable";
-    card.onclick = (e)=>{if(e.target.closest("button,a,input,select,textarea,label")) return; openRepair(r.id);};
+    card.className = "card clickableCard";
+    card.addEventListener("click", e=>{ if(e.target.closest("button")) return; openRepair(r.id); });
     card.innerHTML = `
       <div class="cardTop">
         <div>
@@ -803,8 +799,8 @@ function renderTrades(query=""){
   arr.forEach(t=>{
     const margin = Number(t.resale||0) - Number(t.offer||0);
     const card = document.createElement("div");
-    card.className = "card clickable";
-    card.onclick = (e)=>{if(e.target.closest("button,a,input,select,textarea,label")) return; openTrade(t.id);};
+    card.className = "card clickableCard";
+    card.addEventListener("click", e=>{ if(e.target.closest("button")) return; openTrade(t.id); });
     card.innerHTML = `
       <div class="cardTop">
         <div>
@@ -867,8 +863,8 @@ function renderItems(query=""){
       grouped[brand][condition].forEach(i=>{
         const margin = Number(i.sale||0) - Number(i.cost||0);
         const card = document.createElement("div");
-        card.className = "card clickable";
-        card.onclick = (e)=>{if(e.target.closest("button,a,input,select,textarea,label")) return; openItem(i.id);};
+        card.className = "card clickableCard";
+        card.addEventListener("click", e=>{ if(e.target.closest("button")) return; openItem(i.id); });
         card.innerHTML = `
           <div class="cardTop">
             <div>
@@ -906,8 +902,8 @@ function renderClients(query=""){
   $("clientList").innerHTML = list.length ? "" : `<div class="empty">No hay clientes.</div>`;
   list.forEach(c=>{
     const card = document.createElement("div");
-    card.className = "card clickable";
-    card.onclick = (e)=>{if(e.target.closest("button,a,input,select,textarea,label")) return; openClient(c.id,cleanPhone(c.phone));};
+    card.className = "card clickableCard";
+    card.addEventListener("click", e=>{ if(e.target.closest("button")) return; openClient(c.id,cleanPhone(c.phone)); });
     card.innerHTML = `
       <div class="cardTop">
         <div>
@@ -947,8 +943,8 @@ function renderTransactions(query=""){
     const negative = ["expense","trade"].includes(x.type);
     if(negative) expense += Number(x.amount||0); else income += Number(x.amount||0);
     const card = document.createElement("div");
-    card.className = "card clickable";
-    card.onclick = (e)=>{if(e.target.closest("button,a,input,select,textarea,label")) return; openTx(x.id);};
+    card.className = "card clickableCard";
+    card.addEventListener("click", e=>{ if(e.target.closest("button")) return; openTx(x.id); });
     card.innerHTML = `
       <div class="cardTop">
         <div>
@@ -1159,7 +1155,6 @@ document.querySelectorAll("#conditionFilters button").forEach(btn=>{
 });
 
 $("themeBtn").onclick = ()=>{data.settings.theme = data.settings.theme === "dark" ? "light" : "dark";save();renderAll();};
-$("homeBtn").onclick = ()=>switchView("dashboard");
 $("saveSettingsBtn").onclick = ()=>{
   data.settings.businessName = $("businessNameInput").value.trim() || "Repair Hub Pro";
   data.settings.businessPhone = $("businessPhoneInput").value.trim();
