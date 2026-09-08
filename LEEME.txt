@@ -1,21 +1,18 @@
-Repair Hub Pro V9
+Repair Hub Pro V10
 
-Nuevos tipos añadidos:
-- Control
-- Laptop
-- PC
-- Smartwatch
-- Accesorio
-
-Se añadieron en:
-- Reparaciones
-- Trade-In
-- Artículos
+Novedades:
+- Botón ⌂ Inicio siempre visible arriba.
+- Tocar los cuadros del Resumen abre su sección.
+- Tocar una tarjeta de Reparación abre la reparación.
+- Tocar una tarjeta de Trade-In abre el Trade-In.
+- Tocar una tarjeta de Artículo abre el artículo.
+- Tocar una tarjeta de Cliente abre el cliente.
+- Tocar una tarjeta de Transacción abre la transacción.
+- Los botones internos siguen funcionando sin abrir la tarjeta por accidente.
 
 Para confirmar que cargó:
-V9 · MÁS TIPOS DE EQUIPO
+V10 · BOTÓN INICIO + TARJETAS TOUCH
 
-En GitHub reemplaza:
+Reemplaza en GitHub:
 1. index.html
 2. sw.js
-3. manifest.webmanifest (opcional)
