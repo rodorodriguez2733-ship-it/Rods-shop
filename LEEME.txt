@@ -1,17 +1,25 @@
-Repair Hub Gamer Pro — Tarjeta visual por Mensajes/WhatsApp
+Repair Hub Pro — versión con Clientes y Transacciones
 
-Nuevo:
-- Botón “Enviar estado” en cada reparación.
-- Crea una imagen tipo captura con:
-  - Foto del equipo/artículo
-  - Nombre del equipo
-  - Cliente, fecha y hora
-  - Barra de progreso
-  - Estado actual
-  - Estimado, balance y método de pago
-- En iPhone abre la hoja de compartir para enviarla por Mensajes, WhatsApp u otra app.
-- También conserva “Texto” para SMS normal y “Foto sola”.
+Incluye TODO lo pedido:
+- Diseño gamer más animado.
+- Reparaciones.
+- Trade-In.
+- Artículos.
+- Clientes.
+- Transacciones diarias.
+- Marcas: Apple, Samsung, Nintendo, PlayStation, Xbox y Otro.
+- Artículos divididos por marca y por condición (Nuevo, Usado, Refurbished, Para piezas).
+- Fecha y hora.
+- Método de pago: ATH Móvil, Efectivo, Tarjeta, Transferencia y Otro.
+- Foto opcional en reparaciones, trade-in y artículos.
+- Envío por WhatsApp y Mensaje.
+- Tarjeta visual de estado de reparación con foto y barra de progreso.
+- Barra de progreso.
+- Botones rápidos en reparación: Recibido, Proceso y Entrega.
+- Pestaña de Clientes.
+- Pestaña de Transacciones diarias.
 
-Importante:
-Un SMS normal no puede dibujar una barra de progreso dentro del texto.
-Por eso “Enviar estado” genera una imagen visual y la comparte como foto.
+Para GitHub Pages reemplaza:
+- index.html
+- manifest.webmanifest
+- sw.js
