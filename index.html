@@ -654,6 +654,135 @@ Pago: ${i.payment || "No indicado"}
 ${data.settings.footerNote || ""}`.trim();
 }
 
+
+async function createRepairStatusCard(r){
+  const W=1080,H=1350;
+  const c=document.createElement("canvas");
+  c.width=W;c.height=H;
+  const ctx=c.getContext("2d");
+
+  // Background
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,"#0b0d12");
+  bg.addColorStop(.55,"#141821");
+  bg.addColorStop(1,"#0d1421");
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+
+  // Header accent
+  const acc=ctx.createLinearGradient(0,0,W,0);
+  acc.addColorStop(0,"#ef4444");acc.addColorStop(.5,"#7c3aed");acc.addColorStop(1,"#3b82f6");
+  ctx.fillStyle=acc;ctx.fillRect(0,0,W,18);
+
+  // Business title
+  ctx.fillStyle="#ffffff";
+  ctx.font="900 58px -apple-system,Arial";
+  ctx.fillText(data.settings.businessName||"Repair Hub Pro",70,105);
+  ctx.fillStyle="#9ca6ba";
+  ctx.font="700 27px -apple-system,Arial";
+  ctx.fillText("ESTADO DE REPARACIÓN",70,150);
+
+  // Device image area
+  const imgX=70,imgY=205,imgW=940,imgH=520;
+  ctx.fillStyle="#171c27";
+  roundRect(ctx,imgX,imgY,imgW,imgH,28,true,false);
+  if(r.photo){
+    try{
+      const im=await new Promise((resolve,reject)=>{
+        const x=new Image();x.onload=()=>resolve(x);x.onerror=reject;x.src=r.photo;
+      });
+      const scale=Math.max(imgW/im.width,imgH/im.height);
+      const dw=im.width*scale,dh=im.height*scale;
+      ctx.save();
+      roundRect(ctx,imgX,imgY,imgW,imgH,28,false,false);
+      ctx.clip();
+      ctx.drawImage(im,imgX+(imgW-dw)/2,imgY+(imgH-dh)/2,dw,dh);
+      ctx.restore();
+    }catch(e){}
+  }else{
+    ctx.fillStyle="#6b7280";
+    ctx.font="700 34px -apple-system,Arial";
+    ctx.textAlign="center";
+    ctx.fillText("Sin foto del equipo",W/2,imgY+imgH/2);
+    ctx.textAlign="left";
+  }
+
+  // Info
+  ctx.fillStyle="#ffffff";
+  ctx.font="900 43px -apple-system,Arial";
+  ctx.fillText(`${r.brand||""} ${r.model||""}`.trim()||"Equipo",70,790);
+
+  ctx.fillStyle="#9ca6ba";
+  ctx.font="700 27px -apple-system,Arial";
+  ctx.fillText(`${r.client||"Cliente"}  •  ${fmtDate(r.date)} ${r.time||""}`,70,835);
+
+  const prog=progressInfo(r.status);
+  ctx.fillStyle="#ffffff";
+  ctx.font="800 31px -apple-system,Arial";
+  ctx.fillText(`Proceso: ${prog.l}`,70,915);
+
+  ctx.fillStyle="#263246";
+  roundRect(ctx,70,950,940,34,17,true,false);
+  const pg=ctx.createLinearGradient(70,0,1010,0);
+  pg.addColorStop(0,"#ef4444");pg.addColorStop(.5,"#3b82f6");pg.addColorStop(1,"#22c55e");
+  ctx.fillStyle=pg;
+  roundRect(ctx,70,950,940*(prog.p/100),34,17,true,false);
+
+  ctx.fillStyle="#ffffff";
+  ctx.font="900 27px -apple-system,Arial";
+  ctx.fillText(`${prog.p}%`,920,930);
+
+  // Money/status boxes
+  const y=1045;
+  drawInfoBox(ctx,70,y,290,145,"ESTIMADO",money(r.estimate));
+  drawInfoBox(ctx,395,y,290,145,"BALANCE",money(Number(r.estimate||0)-Number(r.deposit||0)));
+  drawInfoBox(ctx,720,y,290,145,"PAGO",r.payment||"No indicado");
+
+  ctx.fillStyle="#9ca6ba";
+  ctx.font="600 24px -apple-system,Arial";
+  ctx.textAlign="center";
+  ctx.fillText(data.settings.footerNote||"Gracias por preferirnos",W/2,1275);
+  ctx.textAlign="left";
+
+  return await new Promise(resolve=>c.toBlob(resolve,"image/png",.95));
+}
+function roundRect(ctx,x,y,w,h,r,fill,stroke){
+  const rr=Math.min(r,w/2,h/2);
+  ctx.beginPath();
+  ctx.moveTo(x+rr,y);
+  ctx.arcTo(x+w,y,x+w,y+h,rr);
+  ctx.arcTo(x+w,y+h,x,y+h,rr);
+  ctx.arcTo(x,y+h,x,y,rr);
+  ctx.arcTo(x,y,x+w,y,rr);
+  ctx.closePath();
+  if(fill)ctx.fill();
+  if(stroke)ctx.stroke();
+}
+function drawInfoBox(ctx,x,y,w,h,label,value){
+  ctx.fillStyle="#171c27";roundRect(ctx,x,y,w,h,22,true,false);
+  ctx.fillStyle="#8f9ab0";ctx.font="800 22px -apple-system,Arial";ctx.fillText(label,x+22,y+42);
+  ctx.fillStyle="#ffffff";ctx.font="900 32px -apple-system,Arial";
+  const shown=String(value||"");
+  ctx.fillText(shown.length>15?shown.slice(0,14)+"…":shown,x+22,y+94);
+}
+async function shareRepairStatusCard(r){
+  const blob=await createRepairStatusCard(r);
+  if(!blob){alert("No pude crear la tarjeta.");return;}
+  const file=new File([blob],"estado-reparacion.png",{type:"image/png"});
+  const text=repairMessage(r);
+  try{
+    if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({title:"Estado de reparación",text,files:[file]});
+    }else{
+      const a=document.createElement("a");
+      a.href=URL.createObjectURL(blob);
+      a.download="estado-reparacion.png";
+      a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+      alert("Se creó la tarjeta. Puedes enviarla por Mensajes o WhatsApp.");
+    }
+  }catch(e){}
+}
+
 function renderDashboard(){
   $("statRepairs").textContent = data.repairs.filter(r=>r.status!=="delivered").length;
   $("statReady").textContent = data.repairs.filter(r=>r.status==="ready").length;
@@ -698,8 +827,9 @@ function renderRepairs(query=""){
       <div class="actions">
         <button onclick="openRepair('${r.id}')">Editar</button>
         ${r.phone ? `<button class="wa" onclick="openWhatsApp('${r.phone}', repairMessage(getRepair('${r.id}')))">🟢 WhatsApp</button>` : ""}
-        ${r.phone ? `<button class="sms" onclick="openSMS('${r.phone}', repairMessage(getRepair('${r.id}')))">💬 Mensaje</button>` : ""}
-        ${r.photo ? `<button class="share" onclick="sharePhoto(getRepair('${r.id}').photo,'Foto reparación')">📷 Enviar foto</button>` : ""}
+        ${r.phone ? `<button class="sms" onclick="openSMS('${r.phone}', repairMessage(getRepair('${r.id}')))">💬 Texto</button>` : ""}
+        <button class="share" onclick="shareRepairStatusCard(getRepair('${r.id}'))">🖼️ Enviar estado</button>
+        ${r.photo ? `<button class="share" onclick="sharePhoto(getRepair('${r.id}').photo,'Foto reparación')">📷 Foto sola</button>` : ""}
         <button class="danger" onclick="deleteRepair('${r.id}')">Eliminar</button>
       </div>`;
     $("repairList").appendChild(card);
