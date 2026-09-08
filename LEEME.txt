@@ -1,17 +1,19 @@
-Repair Hub Pro V10
+Repair Hub Pro V11
 
-Novedades:
-- Botón ⌂ Inicio siempre visible arriba.
-- Tocar los cuadros del Resumen abre su sección.
-- Tocar una tarjeta de Reparación abre la reparación.
-- Tocar una tarjeta de Trade-In abre el Trade-In.
-- Tocar una tarjeta de Artículo abre el artículo.
-- Tocar una tarjeta de Cliente abre el cliente.
-- Tocar una tarjeta de Transacción abre la transacción.
-- Los botones internos siguen funcionando sin abrir la tarjeta por accidente.
+CORREGIDO:
+- Los iconos y botones vuelven a funcionar.
+- Inicio funciona.
+- WhatsApp funciona.
+- Mensaje funciona.
+- Editar funciona.
+- Enviar estado funciona.
+- Foto funciona.
+- Eliminar funciona.
+- Los cuadros siguen siendo tocables para entrar a la opción.
+- Tocar un botón dentro del cuadro ya no activa el cuadro por error.
 
 Para confirmar que cargó:
-V10 · BOTÓN INICIO + TARJETAS TOUCH
+V11 · ICONOS Y BOTONES FUNCIONANDO
 
 Reemplaza en GitHub:
 1. index.html
