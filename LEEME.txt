@@ -1,17 +1,17 @@
-REPAIR HUB PRO V5
+REPAIR HUB PRO V6
 
-Cambios:
-- Los botones grandes de CLIENTES y TRANSACCIONES ahora se ponen UNO DEBAJO DEL OTRO en teléfono.
-- Las pestañas ya NO corren para el lado.
-- Las pestañas salen acomodadas en cuadricula debajo.
+Cambios nuevos:
+- Se eliminaron CLIENTES y TRANSACCIONES de los botones pequeños.
+- Solo quedan en grande arriba.
+- Fondo más moderno.
+- Iconos y botones con estilo más moderno.
+- Pestañas acomodadas sin correr hacia el lado.
 
-Si no ves el texto:
-V5 · MENÚ FIJO Y DEBAJO
-todavía estás viendo una versión vieja.
+Debes ver arriba este texto verde:
+V6 · DISEÑO MODERNO
 
-Reemplaza en GitHub:
+Si no sale, reemplaza en GitHub:
 1. index.html
 2. sw.js
-3. manifest.webmanifest (si quieres, aunque no es obligatorio para probar)
-
-Luego haz Commit changes y recarga la página.
+3. manifest.webmanifest
+Luego Commit changes y recarga la página.
