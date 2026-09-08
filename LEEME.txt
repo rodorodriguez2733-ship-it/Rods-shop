@@ -1,12 +1,11 @@
-Repair Hub moderno — Reparaciones + Trade-In + Artículos
+Repair Hub — Artículos divididos por marca y condición
 
-Incluye:
-- Fecha y hora en reparaciones y Trade-In.
-- Marcas: Apple, Samsung, Nintendo, PlayStation, Xbox y Otro.
-- Métodos de pago: ATH Móvil, Efectivo, Tarjeta, Transferencia y Otro.
-- Botón “Enviar mensaje” para abrir Mensajes/SMS con un resumen de la reparación o Trade-In.
-- Pestaña Artículos con marca, tipo, modelo, costo, venta, cantidad, condición, fecha de entrada, método de pago, serial/SKU y notas.
-- Tema claro/oscuro.
-- Diseño móvil más moderno.
-
-Nota: los datos siguen guardándose localmente en este dispositivo hasta que se conecte a Firebase.
+En Artículos:
+- Marcas separadas: Apple, Samsung, Nintendo, PlayStation, Xbox y Otro.
+- Dentro de cada marca se separan:
+  - Nuevos
+  - Usados
+  - Refurbished
+  - Para piezas
+- También puedes filtrar arriba por marca y condición.
+- Mantiene fecha, método de pago, costo, precio de venta, stock, serial/SKU y notas.

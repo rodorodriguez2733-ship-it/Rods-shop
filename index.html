@@ -45,6 +45,22 @@ header{backdrop-filter:saturate(160%) blur(18px);box-shadow:0 1px 0 rgba(0,0,0,.
   .card{border-radius:15px}
 }
 
+
+.filterTitle{font-size:12px;font-weight:900;color:var(--muted);margin:7px 2px 5px}
+.brandFilters{display:flex;gap:7px;overflow-x:auto;padding:2px 0 9px;margin-bottom:2px}
+.brandFilters::-webkit-scrollbar{display:none}
+.brandFilters button{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:999px;padding:9px 13px;font-weight:850;min-height:40px}
+.brandFilters button.active{background:var(--text);color:var(--panel);border-color:var(--text)}
+.brandSection{margin:14px 0 20px}
+.brandHeader{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 2px 8px}
+.brandHeader h3{margin:0;font-size:18px;letter-spacing:-.2px}
+.brandCount{font-size:12px;color:var(--muted);font-weight:800}
+.conditionSection{margin:8px 0 13px;padding:10px;border-radius:13px;background:var(--bg);border:1px solid var(--line)}
+.conditionHeader{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.conditionHeader strong{font-size:14px}
+.conditionHeader span{font-size:11px;color:var(--muted);font-weight:800}
+.conditionSection .card{margin-bottom:8px}
+
 </style></head><body><div class="app">
 <header><div class="top"><div class="brand">🛠️ <span id="brandName">Repair Hub</span><div class="sub">TELÉFONOS · CONSOLAS · TRADE-IN</div></div><button class="icon" id="themeBtn">◐</button></div>
 <div class="tabs"><button data-v="dashboard" class="active">Resumen</button><button data-v="repairs">Reparaciones</button><button data-v="trade">Trade-In</button><button data-v="items">Artículos</button><button data-v="settings">Ajustes</button></div></header>
@@ -55,6 +71,27 @@ header{backdrop-filter:saturate(160%) blur(18px);box-shadow:0 1px 0 rgba(0,0,0,.
 
 <section id="items" class="view">
 <div class="toolbar"><input id="itemSearch" placeholder="Buscar artículo, marca, modelo..."><button class="primary" id="newItem">+ Nuevo artículo</button></div>
+
+<div class="filterTitle">Marca</div>
+<div class="brandFilters" id="brandFilters">
+  <button type="button" data-brand="Todas" class="active">Todas</button>
+  <button type="button" data-brand="Apple">Apple</button>
+  <button type="button" data-brand="Samsung">Samsung</button>
+  <button type="button" data-brand="Nintendo">Nintendo</button>
+  <button type="button" data-brand="PlayStation">PlayStation</button>
+  <button type="button" data-brand="Xbox">Xbox</button>
+  <button type="button" data-brand="Otro">Otro</button>
+</div>
+
+<div class="filterTitle">Condición</div>
+<div class="brandFilters" id="conditionFilters">
+  <button type="button" data-condition="Todas" class="active">Todos</button>
+  <button type="button" data-condition="Nuevo">Nuevos</button>
+  <button type="button" data-condition="Usado">Usados</button>
+  <button type="button" data-condition="Refurbished">Refurbished</button>
+  <button type="button" data-condition="Para piezas">Para piezas</button>
+</div>
+
 <div id="itemList"></div>
 </section>
 <section id="settings" class="view"><div class="settings"><label>Nombre del negocio</label><input id="businessName"><label>Teléfono</label><input id="businessPhone"><label>Tema</label><select id="themeSelect"><option value="light">Claro</option><option value="dark">Oscuro</option></select></div><button class="primary" id="saveSettings">Guardar ajustes</button></section>
@@ -100,7 +137,7 @@ header{backdrop-filter:saturate(160%) blur(18px);box-shadow:0 1px 0 rgba(0,0,0,.
 <div class="modalActions"><button type="button" id="itemDelete" class="danger" style="display:none">Eliminar</button><button type="button" id="itemCancel">Cancelar</button><button class="save">Guardar</button></div>
 </form></dialog>
 <script>
-const K="repair_tradein_v1";let d=JSON.parse(localStorage.getItem(K)||"null")||{settings:{businessName:"Repair Hub",businessPhone:"",theme:"light"},repairs:[],trades:[],items:[]};let er=null,et=null,ei=null;const $=x=>document.getElementById(x),save=()=>localStorage.setItem(K,JSON.stringify(d)),money=n=>"$"+Number(n||0).toFixed(2),uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const K="repair_tradein_v1";let d=JSON.parse(localStorage.getItem(K)||"null")||{settings:{businessName:"Repair Hub",businessPhone:"",theme:"light"},repairs:[],trades:[],items:[]};let er=null,et=null,ei=null,itemBrandFilter="Todas",itemConditionFilter="Todas";const $=x=>document.getElementById(x),save=()=>localStorage.setItem(K,JSON.stringify(d)),money=n=>"$"+Number(n||0).toFixed(2),uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 function status(s){return({received:"Recibido",diagnosis:"Diagnóstico",parts:"Esperando piezas",repairing:"En reparación",ready:"Listo",delivered:"Entregado"})[s]||s}
 function apply(){document.documentElement.dataset.theme=d.settings.theme;$("brandName").textContent=d.settings.businessName;$("businessName").value=d.settings.businessName;$("businessPhone").value=d.settings.businessPhone;$("themeSelect").value=d.settings.theme}
 
@@ -122,9 +159,76 @@ function renderRepairs(q=""){q=q.toLowerCase();let a=d.repairs.filter(r=>(r.clie
 function renderTrades(q=""){q=q.toLowerCase();let a=d.trades.filter(t=>(t.client+" "+t.phone+" "+t.brand+" "+t.model+" "+t.condition+" "+t.serial).toLowerCase().includes(q)).sort((a,b)=>b.updatedAt-a.updatedAt);$("tradeList").innerHTML=a.map(t=>`<div class="card"><div class="cardtop"><div><div class="title">${t.brand||""} ${t.model||""}</div><div class="muted">${t.client||"Cliente"} · ${t.condition}</div><div class="datetime">📅 ${fmtDate(t.date)}${t.time?" · 🕒 "+t.time:""}</div><div class="paypill">💳 ${t.payment||"No indicado"}</div></div><span class="badge">${t.status}</span></div><div class="meta"><div><b>Oferta</b><span>${money(t.offer)}</span></div><div><b>Reventa</b><span>${money(t.resale)}</span></div><div><b>Margen</b><span>${money(Number(t.resale||0)-Number(t.offer||0))}</span></div></div><div class="actions"><button onclick="openTrade('${t.id}')">Editar</button>${t.phone?`<button class="msg" onclick="messageTrade(d.trades.find(x=>x.id==='${t.id}'))">💬 Enviar mensaje</button>`:""}<button class="danger" onclick="delTrade('${t.id}')">Eliminar</button></div></div>`).join("")||"<div class='muted'>No hay Trade-In.</div>"}
 
 function renderItems(q=""){
-q=q.toLowerCase();
-let a=(d.items||[]).filter(i=>(i.brand+" "+i.type+" "+i.model+" "+i.serial+" "+i.condition).toLowerCase().includes(q)).sort((a,b)=>b.updatedAt-a.updatedAt);
-$("itemList").innerHTML=a.map(i=>`<div class="card"><div class="cardtop"><div><div class="title">${i.brand} · ${i.model||i.type}</div><div class="muted">${i.type} · ${i.condition}${i.serial?" · "+i.serial:""}</div></div><span class="badge">Stock: ${i.qty}</span></div><div class="meta"><div><b>Costo</b><span>${money(i.cost)}</span></div><div><b>Venta</b><span>${money(i.sale)}</span></div><div><b>Margen/unidad</b><span>${money(Number(i.sale||0)-Number(i.cost||0))}</span></div></div><div class="actions"><button onclick="openItem('${i.id}')">Editar</button><button class="danger" onclick="delItem('${i.id}')">Eliminar</button></div></div>`).join("")||"<div class='muted'>No hay artículos.</div>"
+q=(q||"").toLowerCase().trim();
+
+const brandOrder=["Apple","Samsung","Nintendo","PlayStation","Xbox","Otro"];
+const conditionOrder=["Nuevo","Usado","Refurbished","Para piezas"];
+
+let a=(d.items||[]).filter(i=>{
+  const searchText=(i.brand+" "+i.type+" "+i.model+" "+i.serial+" "+i.condition+" "+(i.notes||"")).toLowerCase();
+  const matchesSearch=searchText.includes(q);
+  const matchesBrand=itemBrandFilter==="Todas" || i.brand===itemBrandFilter;
+  const matchesCondition=itemConditionFilter==="Todas" || i.condition===itemConditionFilter;
+  return matchesSearch && matchesBrand && matchesCondition;
+}).sort((a,b)=>b.updatedAt-a.updatedAt);
+
+if(!a.length){
+  $("itemList").innerHTML="<div class='muted' style='padding:24px 4px'>No hay artículos con esos filtros.</div>";
+  return;
+}
+
+const grouped={};
+a.forEach(i=>{
+  const brand=brandOrder.includes(i.brand)?i.brand:"Otro";
+  const condition=conditionOrder.includes(i.condition)?i.condition:"Usado";
+  grouped[brand] ||= {};
+  grouped[brand][condition] ||= [];
+  grouped[brand][condition].push(i);
+});
+
+$("itemList").innerHTML=brandOrder
+  .filter(brand=>grouped[brand])
+  .map(brand=>{
+    const conditionBlocks=conditionOrder
+      .filter(condition=>grouped[brand][condition]?.length)
+      .map(condition=>{
+        const items=grouped[brand][condition];
+        const cards=items.map(i=>`<div class="card">
+          <div class="cardtop">
+            <div>
+              <div class="title">${i.model||i.type}</div>
+              <div class="muted">${i.type}${i.serial?" · "+i.serial:""}</div>
+              <div class="datetime">📅 ${fmtDate(i.date)}</div>
+              <div class="paypill">💳 ${i.payment||"No indicado"}</div>
+            </div>
+            <span class="badge">Stock: ${i.qty}</span>
+          </div>
+          <div class="meta">
+            <div><b>Costo</b><span>${money(i.cost)}</span></div>
+            <div><b>Venta</b><span>${money(i.sale)}</span></div>
+            <div><b>Margen/unidad</b><span>${money(Number(i.sale||0)-Number(i.cost||0))}</span></div>
+          </div>
+          <div class="actions">
+            <button onclick="openItem('${i.id}')">Editar</button>
+            <button class="danger" onclick="delItem('${i.id}')">Eliminar</button>
+          </div>
+        </div>`).join("");
+
+        return `<div class="conditionSection">
+          <div class="conditionHeader">
+            <strong>${condition==="Nuevo"?"🆕 Nuevos":condition==="Usado"?"♻️ Usados":condition}</strong>
+            <span>${items.length} artículo${items.length===1?"":"s"}</span>
+          </div>
+          ${cards}
+        </div>`;
+      }).join("");
+
+    const total=Object.values(grouped[brand]).reduce((sum,list)=>sum+list.length,0);
+    return `<div class="brandSection">
+      <div class="brandHeader"><h3>${brand}</h3><span class="brandCount">${total} artículo${total===1?"":"s"}</span></div>
+      ${conditionBlocks}
+    </div>`;
+  }).join("");
 }
 window.openItem=id=>{
 ei=id||null;let i=id?(d.items||[]).find(x=>x.id===id):{};
@@ -151,5 +255,15 @@ window.openTrade=id=>{et=id||null;let t=id?d.trades.find(x=>x.id===id):{};$("tra
 $("tradeForm").onsubmit=e=>{e.preventDefault();let t=et?d.trades.find(x=>x.id===et):{id:uid()};Object.assign(t,{client:$("tClient").value,phone:$("tPhone").value,category:$("tCategory").value,brand:$("tBrand").value,model:$("tModel").value,date:$("tDate").value,time:$("tTime").value,variant:$("tVariant").value,serial:$("tSerial").value,condition:$("tCondition").value,offer:Number($("tOffer").value||0),resale:Number($("tResale").value||0),status:$("tStatus").value,payment:$("tPayment").value,notes:$("tNotes").value,updatedAt:Date.now()});if(!et)d.trades.push(t);save();$("tradeDlg").close();all()}
 window.delTrade=id=>{if(confirm("¿Eliminar este Trade-In?")){d.trades=d.trades.filter(x=>x.id!==id);save();all()}};$("tradeDelete").onclick=()=>{if(et){delTrade(et);$("tradeDlg").close()}};$("tradeCancel").onclick=()=>$("tradeDlg").close();
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));$(b.dataset.v).classList.add("active");document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("active",x===b));all()});
-$("newRepair").onclick=()=>openRepair();$("newTrade").onclick=()=>openTrade();$("newItem").onclick=()=>openItem();$("repairSearch").oninput=e=>renderRepairs(e.target.value);$("tradeSearch").oninput=e=>renderTrades(e.target.value);$("itemSearch").oninput=e=>renderItems(e.target.value);$("themeBtn").onclick=()=>{d.settings.theme=d.settings.theme==="dark"?"light":"dark";save();all()};$("saveSettings").onclick=()=>{d.settings.businessName=$("businessName").value||"Repair Hub";d.settings.businessPhone=$("businessPhone").value;d.settings.theme=$("themeSelect").value;save();all()};all();
+$("newRepair").onclick=()=>openRepair();$("newTrade").onclick=()=>openTrade();$("newItem").onclick=()=>openItem();
+document.querySelectorAll("#brandFilters [data-brand]").forEach(btn=>btn.onclick=()=>{
+  itemBrandFilter=btn.dataset.brand;
+  document.querySelectorAll("#brandFilters [data-brand]").forEach(x=>x.classList.toggle("active",x===btn));
+  renderItems($("itemSearch").value||"");
+});
+document.querySelectorAll("#conditionFilters [data-condition]").forEach(btn=>btn.onclick=()=>{
+  itemConditionFilter=btn.dataset.condition;
+  document.querySelectorAll("#conditionFilters [data-condition]").forEach(x=>x.classList.toggle("active",x===btn));
+  renderItems($("itemSearch").value||"");
+});$("repairSearch").oninput=e=>renderRepairs(e.target.value);$("tradeSearch").oninput=e=>renderTrades(e.target.value);$("itemSearch").oninput=e=>renderItems(e.target.value);$("themeBtn").onclick=()=>{d.settings.theme=d.settings.theme==="dark"?"light":"dark";save();all()};$("saveSettings").onclick=()=>{d.settings.businessName=$("businessName").value||"Repair Hub";d.settings.businessPhone=$("businessPhone").value;d.settings.theme=$("themeSelect").value;save();all()};all();
 </script></body></html>
