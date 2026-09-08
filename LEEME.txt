@@ -1,21 +1,17 @@
-VERSIÓN V4
+REPAIR HUB PRO V5
 
-En la parte superior deben verse dos botones grandes:
-👥 CLIENTES
-💵 TRANSACCIONES
+Cambios:
+- Los botones grandes de CLIENTES y TRANSACCIONES ahora se ponen UNO DEBAJO DEL OTRO en teléfono.
+- Las pestañas ya NO corren para el lado.
+- Las pestañas salen acomodadas en cuadricula debajo.
 
-También aparecen dentro de las pestañas normales.
+Si no ves el texto:
+V5 · MENÚ FIJO Y DEBAJO
+todavía estás viendo una versión vieja.
 
-Si NO ves el texto verde:
-V4 · CLIENTES Y TRANSACCIONES ACTIVOS
-entonces GitHub sigue mostrando el index.html anterior.
+Reemplaza en GitHub:
+1. index.html
+2. sw.js
+3. manifest.webmanifest (si quieres, aunque no es obligatorio para probar)
 
-Para corregirlo:
-1. En GitHub abre el repositorio correcto.
-2. Borra el index.html viejo.
-3. Sube ESTE index.html.
-4. Commit changes.
-5. Espera 1 minuto.
-6. Abre la web con Safari y recarga.
-
-No necesitas reemplazar todo para probar: reemplaza primero solamente index.html.
+Luego haz Commit changes y recarga la página.

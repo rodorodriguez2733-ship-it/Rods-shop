@@ -35,9 +35,9 @@ header{position:sticky;top:0;z-index:30;padding:14px;background:linear-gradient(
 .iconBtn{width:46px;height:46px;font-size:20px}
 .primaryBtn{background:linear-gradient(135deg,var(--red),#b91c1c);color:#fff;border:0;padding:12px 16px;font-weight:900;box-shadow:0 10px 22px rgba(239,68,68,.22)}
 .pillBtn:hover,.tabBtn:hover,.primaryBtn:hover,.ghostBtn:hover,.iconBtn:hover{transform:translateY(-1px)}
-.tabs{margin-top:12px;display:flex;gap:8px;overflow:auto;padding-bottom:2px}
+.tabs{margin-top:12px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;overflow:visible;padding-bottom:2px}
 .tabs::-webkit-scrollbar{display:none}
-.tabBtn{padding:11px 12px;font-weight:900;min-width:110px}
+.tabBtn{padding:11px 12px;font-weight:900;min-width:0;width:100%}
 .tabBtn.active{background:linear-gradient(135deg, rgba(239,68,68,.18), rgba(59,130,246,.16));border-color:rgba(239,68,68,.35);box-shadow:0 0 0 1px rgba(239,68,68,.12) inset}
 main{padding:14px}
 .view{display:none}
@@ -125,6 +125,8 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
   .toolbar{flex-direction:column;align-items:stretch}
   .search{width:100%}
   .brand h1{font-size:21px}
+  .quickTopButtons{grid-template-columns:1fr !important}
+  .tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 </style>
 </head>
@@ -135,11 +137,11 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
     <div class="logoBox">🎮</div>
     <div class="brand">
       <h1 id="brandName">Repair Hub Pro</h1>
-      <p>TELÉFONOS · CONSOLAS · TRADE-IN · INVENTARIO</p><div style="font-size:10px;font-weight:900;color:var(--green);margin-top:5px">V4 · CLIENTES Y TRANSACCIONES ACTIVOS</div>
+      <p>TELÉFONOS · CONSOLAS · TRADE-IN · INVENTARIO</p><div style="font-size:10px;font-weight:900;color:var(--green);margin-top:5px">V5 · MENÚ FIJO Y DEBAJO</div>
     </div>
     <button class="pillBtn" id="themeBtn">🌙/☀️</button>
   </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+  <div class="quickTopButtons" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
       <button class="primaryBtn" type="button" onclick="switchView('clients')">👥 CLIENTES</button>
       <button class="primaryBtn" type="button" onclick="switchView('transactions')">💵 TRANSACCIONES</button>
     </div>
