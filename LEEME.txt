@@ -1,17 +1,13 @@
-REPAIR HUB PRO V6
+Repair Hub Pro V7
 
-Cambios nuevos:
-- Se eliminaron CLIENTES y TRANSACCIONES de los botones pequeños.
-- Solo quedan en grande arriba.
-- Fondo más moderno.
-- Iconos y botones con estilo más moderno.
-- Pestañas acomodadas sin correr hacia el lado.
+Corregido:
+- CLIENTES y TRANSACCIONES ya NO aparecen en los botones pequeños.
+- Solo quedan los dos botones grandes de arriba.
+- Los botones pequeños quedan: Resumen, Reparaciones, Trade-In, Artículos y Ajustes.
 
-Debes ver arriba este texto verde:
-V6 · DISEÑO MODERNO
+Para confirmar que cargó:
+debe decir arriba:
+V7 · SIN BOTONES PEQUEÑOS DUPLICADOS
 
-Si no sale, reemplaza en GitHub:
-1. index.html
-2. sw.js
-3. manifest.webmanifest
-Luego Commit changes y recarga la página.
+Reemplaza primero index.html en GitHub.
+También reemplaza sw.js para evitar que Safari use la versión anterior.
