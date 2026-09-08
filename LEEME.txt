@@ -1,25 +1,21 @@
-Repair Hub Pro — versión con Clientes y Transacciones
+VERSIÓN V4
 
-Incluye TODO lo pedido:
-- Diseño gamer más animado.
-- Reparaciones.
-- Trade-In.
-- Artículos.
-- Clientes.
-- Transacciones diarias.
-- Marcas: Apple, Samsung, Nintendo, PlayStation, Xbox y Otro.
-- Artículos divididos por marca y por condición (Nuevo, Usado, Refurbished, Para piezas).
-- Fecha y hora.
-- Método de pago: ATH Móvil, Efectivo, Tarjeta, Transferencia y Otro.
-- Foto opcional en reparaciones, trade-in y artículos.
-- Envío por WhatsApp y Mensaje.
-- Tarjeta visual de estado de reparación con foto y barra de progreso.
-- Barra de progreso.
-- Botones rápidos en reparación: Recibido, Proceso y Entrega.
-- Pestaña de Clientes.
-- Pestaña de Transacciones diarias.
+En la parte superior deben verse dos botones grandes:
+👥 CLIENTES
+💵 TRANSACCIONES
 
-Para GitHub Pages reemplaza:
-- index.html
-- manifest.webmanifest
-- sw.js
+También aparecen dentro de las pestañas normales.
+
+Si NO ves el texto verde:
+V4 · CLIENTES Y TRANSACCIONES ACTIVOS
+entonces GitHub sigue mostrando el index.html anterior.
+
+Para corregirlo:
+1. En GitHub abre el repositorio correcto.
+2. Borra el index.html viejo.
+3. Sube ESTE index.html.
+4. Commit changes.
+5. Espera 1 minuto.
+6. Abre la web con Safari y recarga.
+
+No necesitas reemplazar todo para probar: reemplaza primero solamente index.html.

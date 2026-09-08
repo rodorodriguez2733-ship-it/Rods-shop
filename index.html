@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
+<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Repair Hub Pro">
@@ -135,11 +135,15 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
     <div class="logoBox">🎮</div>
     <div class="brand">
       <h1 id="brandName">Repair Hub Pro</h1>
-      <p>TELÉFONOS · CONSOLAS · TRADE-IN · INVENTARIO</p>
+      <p>TELÉFONOS · CONSOLAS · TRADE-IN · INVENTARIO</p><div style="font-size:10px;font-weight:900;color:var(--green);margin-top:5px">V4 · CLIENTES Y TRANSACCIONES ACTIVOS</div>
     </div>
     <button class="pillBtn" id="themeBtn">🌙/☀️</button>
   </div>
-  <div class="tabs">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+      <button class="primaryBtn" type="button" onclick="switchView('clients')">👥 CLIENTES</button>
+      <button class="primaryBtn" type="button" onclick="switchView('transactions')">💵 TRANSACCIONES</button>
+    </div>
+    <div class="tabs">
     <button class="tabBtn active" data-view="dashboard">Resumen</button>
     <button class="tabBtn" data-view="repairs">Reparaciones</button>
     <button class="tabBtn" data-view="trade">Trade-In</button>
@@ -467,6 +471,8 @@ let data = JSON.parse(localStorage.getItem(KEY) || "null") || {
 };
 
 let editingRepair=null, editingTrade=null, editingItem=null, editingClient=null, editingTx=null;
+data.clients = Array.isArray(data.clients) ? data.clients : [];
+data.transactions = Array.isArray(data.transactions) ? data.transactions : [];
 let itemBrandFilter="Todas", itemConditionFilter="Todas";
 
 const $ = id => document.getElementById(id);
